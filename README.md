@@ -1,500 +1,533 @@
 <div align="center">
 
-# 🎓 Portal Hasil Penilaian (PHP)
-### Sistem Transparansi Nilai Akademik & Manajemen Penilaian Sekolah Berbasis Web Serverless
+<!-- HERO HEADER & INTERACTIVE LANGUAGE SWITCHER -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2563eb,50:4f46e5,100:7c3aed&height=210&section=header&text=Portal%20Hasil%20Penilaian&fontSize=42&fontColor=ffffff&fontAlignY=38&desc=Sistem%20Transparansi%20Nilai%20Akademik%20Modern%20•%20Gratis%20%26%20Open-Source&descSize=16&descAlignY=60" width="100%" alt="Portal Hasil Penilaian Banner" />
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](#-4-kenapa-proyek-ini-open-source)
-[![Zero Cost](https://img.shields.io/badge/Biaya_Server-Rp_0_Gratis_Selamanya-10b981?style=for-the-badge)](#-1-kenapa-proyek-ini-dibuat)
-[![Stack](https://img.shields.io/badge/Tech-HTML5_%7C_CSS3_%7C_JS_%7C_Apps_Script-7c3aed?style=for-the-badge)](#-2-deskripsi-sistem)
-[![Open Source](https://img.shields.io/badge/Open_Source-Kontribusi_Terbuka-f59e0b?style=for-the-badge)](#-4-kenapa-proyek-ini-open-source)
+<p>
+  <a href="#-bahasa-indonesia-utama"><kbd>🇮🇩 BAHASA INDONESIA (UTAMA)</kbd></a>
+  &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#-english-version-secondary"><kbd>🇬🇧 ENGLISH VERSION (SECONDARY)</kbd></a>
+</p>
 
-<br/>
+<p>
+  <img src="https://img.shields.io/badge/Version-3.0%20Stable-2563eb?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/License-MIT%20Open--Source-10b981?style=for-the-badge" alt="License" />
+  <img src="https://img.shields.io/badge/Frontend-HTML5%20%7C%20CSS3%20%7C%20Vanilla%20JS-f59e0b?style=for-the-badge" alt="Frontend" />
+  <img src="https://img.shields.io/badge/Backend-Google%20Apps%20Script%20%26%20Sheets-7c3aed?style=for-the-badge" alt="Backend" />
+</p>
 
-**🌐 Pilih Bahasa / Select Language:**
-
-[**🇮🇩 Bahasa Indonesia (Bahasa Utama)**](#-bahasa-indonesia) &nbsp;&nbsp;|&nbsp;&nbsp; [**🇬🇧 English Version (Secondary Language)**](#-english-version)
+<p>
+  <strong>Dirancang & Dikembangkan oleh:</strong><br/>
+  <h3>👨‍💻 Ilham Muhammad Furqon, S.Kom.</h3>
+</p>
 
 </div>
 
 ---
 
-<a id="-bahasa-indonesia"></a>
-# 🇮🇩 Bahasa Indonesia
+<!-- ===================================================================== -->
+<!--                    BAGIAN 1: BAHASA INDONESIA (UTAMA)                 -->
+<!-- ===================================================================== -->
 
-> **Navigasi Cepat:**
-> [1. Kenapa Ini Dibuat?](#-1-kenapa-proyek-ini-dibuat) •
-> [2. Deskripsi Sistem](#-2-deskripsi-sistem) •
-> [3. Cara Install, Pasang & Penggunaan](#-3-cara-install-pasang--penggunaan) •
-> [4. Kenapa Open-Source?](#-4-kenapa-proyek-ini-open-source) •
-> [5. Donasi & Dukungan](#-5-dukung-proyek-ini-tetap-gratis-donasi)
+<div id="-bahasa-indonesia-utama"></div>
 
----
+# 🇮🇩 Dokumentasi Utama (Bahasa Indonesia)
 
-## 💡 1. Kenapa Proyek Ini Dibuat?
-
-Dalam kegiatan evaluasi belajar di sekolah (baik Penilaian Harian, Proyek/Presentasi, Penilaian Tengah Semester, Penilaian Akhir Semester, maupun Tes Kemampuan Akademik/TKA), sering muncul berbagai kendala klasik yang membebani guru maupun siswa:
-
-<table>
-  <tr>
-    <th width="50%">❌ Masalah di Lapangan</th>
-    <th width="50%">✅ Solusi yang Dihadirkan Sistem Ini</th>
-  </tr>
-  <tr>
-    <td><strong>Antrean & Kebingungan Siswa:</strong> Siswa sering menumpuk di ruang guru hanya untuk menanyakan nilai atau apakah mereka harus mengikuti remedial.</td>
-    <td><strong>Akses Mandiri 24/7:</strong> Siswa cukup mengetik NIS atau Nama Lengkap secara utuh untuk melihat rincian nilai, status ketuntasan, dan instruksi remedial.</td>
-  </tr>
-  <tr>
-    <td><strong>Privasi Nilai Kurang Terjaga:</strong> Daftar nilai yang ditempel di mading atau dibagikan lewat PDF grup kelas membuat nilai siswa bisa dilihat oleh teman lainnya.</td>
-    <td><strong>Pencarian Ketat & Privat:</strong> Sistem mewajibkan kecocokan penuh (<em>exact match</em>) NIS atau Nama Lengkap sehingga nilai setiap siswa tetap bersifat pribadi.</td>
-  </tr>
-  <tr>
-    <td><strong>Komunikasi Remedial Tidak Terarah:</strong> Siswa sering menghubungi guru lewat WhatsApp tanpa menyebutkan nama, kelas, maupun mata pelajaran dengan sopan.</td>
-    <td><strong>Template WhatsApp Otomatis:</strong> Jika status siswa <em>Remedial</em>, sistem otomatis menyiapkan format pesan WhatsApp sopan yang terisi nama, kelas, dan mapel siswa.</td>
-  </tr>
-  <tr>
-    <td><strong>Beban Administrasi Guru & Biaya Server:</strong> Aplikasi rapor/nilai komersial membutuhkan biaya sewa VPS/hosting bulanan yang memberatkan kas sekolah.</td>
-    <td><strong>100% Gratis Tanpa Biaya Server:</strong> Menggunakan <strong>Google Sheets & Google Apps Script</strong> sebagai database dan backend <em>serverless</em> gratis selamanya.</td>
-  </tr>
-</table>
+> **Navigasi Cepat (Klik untuk melompat ke bagian tujuan):**
+>
+> <a href="#id-1-kenapa-ini-dibuat"><kbd>1. Kenapa Ini Dibuat?</kbd></a> &nbsp;
+> <a href="#id-2-deskripsi-aplikasi"><kbd>2. Deskripsi & Fitur</kbd></a> &nbsp;
+> <a href="#id-3-cara-install-pasang-dan-penggunaan"><kbd>3. Instalasi, Pemasangan & Penggunaan</kbd></a> &nbsp;
+> <a href="#id-4-kenapa-ini-open-source"><kbd>4. Kenapa Open-Source?</kbd></a> &nbsp;
+> <a href="#id-5-dukungan--donasi"><kbd>5. Donasi & QR Code</kbd></a> &nbsp;
+> <a href="#id-6-tentang-pembuat"><kbd>6. Tentang Pembuat</kbd></a>
 
 ---
 
-## 📖 2. Deskripsi Sistem
+<div id="id-1-kenapa-ini-dibuat"></div>
 
-**Portal Hasil Penilaian** adalah aplikasi web modern yang dirancang dengan arsitektur **Modular Frontend (HTML5, CSS3, Vanilla JavaScript)** dan **Serverless Backend (Google Apps Script + Google Sheets)**. Sistem ini memisahkan hak akses menjadi **3 peran utama**:
+## 1. 💡 Kenapa Ini Dibuat?
 
-### 🎯 Fitur Utama Berdasarkan Peran
+Dalam proses evaluasi pembelajaran di sekolah, penyampaian hasil nilai ulangan, tugas proyek, maupun ujian sering kali menghadapi berbagai kendala teknis dan psikologis di lapangan. **Portal Hasil Penilaian** lahir dari kebutuhan nyata untuk memecahkan masalah-masalah berikut:
 
-<details open>
-<summary><strong>👨‍🎓 A. Portal Siswa & Publik (Tanpa Login)</strong></summary>
+| Permasalahan di Lapangan | Solusi yang Dihadirkannya |
+| :--- | :--- |
+| **1. Kecemasan & Ketidakpastian Siswa**<br/>Siswa sering kali harus menunggu lama atau bertanya berulang-ulang kepada guru hanya untuk mengetahui apakah nilainya sudah tuntas (KKM) atau harus mengikuti remedial. | **Akses Mandiri & Transparan 24/7**<br/>Siswa cukup mengetik **NIS** atau **Nama Lengkap** secara utuh untuk langsung melihat rincian nilai per mata pelajaran beserta status ketuntasannya secara *real-time*. |
+| **2. Beban Administrasi Guru yang Berulang**<br/>Guru harus merekap nilai secara manual, menjawab pesan masuk satu per satu dari puluhan siswa, serta membuat format rekapitulasi yang berbeda-beda. | **Otomatisasi Rumus, Excel & Template WA**<br/>Perhitungan nilai akhir, pembagian poin tambahan (*overflow*), impor/ekspor template Excel, hingga format pesan WhatsApp remedial yang sopan tersedia otomatis dalam satu klik. |
+| **3. Biaya Sewa Server & Domain yang Mahal**<br/>Banyak sekolah atau guru secara individu kesulitan membangun sistem portal nilai karena keterbatasan anggaran sewa VPS, *cloud hosting*, maupun *database* berbayar. | **Infrastruktur 100% Gratis (Serverless)**<br/>Memanfaatkan **Google Sheets** sebagai *database* dan **Google Apps Script** sebagai API *backend*, dipadukan dengan *frontend* statis ringan yang dapat di-*hosting* gratis selamanya. |
+| **4. Miskomunikasi Saat Pengajuan Remedial**<br/>Siswa sering menghubungi guru lewat WhatsApp tanpa mencantumkan identitas lengkap (nama, kelas, maupun mata pelajaran yang dimaksud). | **Template Pesan Remedial Terstruktur**<br/>Jika nilai berada di bawah KKM, kartu hasil otomatis menampilkan panduan dan tombol salin pesan WhatsApp sopan yang sudah terisi identitas siswa secara otomatis. |
 
-- **Pencarian Nilai Privat:** Pencarian nilai berdasarkan **NIS** atau **Nama Lengkap** secara utuh, dilanjutkan dengan pemilihan **Mata Pelajaran / Jenis Ujian**.
-- **4 Variasi Bentuk Kartu Nilai Dinamis:** Tampilan kartu hasil otomatis menyesuaikan jenis ujian yang diatur admin:
-  1. *Default:* Menampilkan Nilai 1 (Slide 1), Nilai 2 (Slide 2), Nilai 3 (Presentasi), Nilai Tambah, dan Nilai Akhir.
-  2. *Nilai Akhir Saja:* Tampilan kartu ringkas yang menonjolkan skor akhir dan ketuntasan KKM.
-  3. *Khusus TKA (Tes Kemampuan Akademik):* Menampilkan rincian skor literasi/Bahasa Indonesia, numerasi/Matematika, dan penalaran.
-  4. *Input Sendiri (Kustom):* Label komponen penilaian dapat disesuaikan secara bebas oleh admin.
-- **Notifikasi Suara & Cetak Kartu:** Efek audio halus saat kartu nilai terbuka (nada apresiasi untuk status **AMAN / TUNTAS** dan nada pengingat untuk **REMEDIAL**), dilengkapi tombol **Cetak Kartu Nilai**.
-- **Instruksi & Template WhatsApp Remedial:** Tombol salin sekali klik (*1-Click Copy*) untuk menyalin pesan permohonan perbaikan nilai yang sudah terisi identitas siswa.
-- **Papan Peringkat Apresiasi (Auto-Rotate 30 Detik):** Menampilkan peringkat terbaik untuk **6 kategori** (Pembuatan Slide, Presentasi, dan Nilai Total — baik per Kelompok maupun per Individu) dengan filter Kelas dan Mata Pelajaran.
-- **Tema Terang / Gelap Otomatis:** Menyesuaikan tampilan siang (*Light Mode*) dan malam (*Dark Mode*) secara otomatis berdasarkan jam lokal perangkat.
+---
 
-</details>
+<div id="id-2-deskripsi-aplikasi"></div>
 
-<details>
-<summary><strong>👩‍🏫 B. Panel Guru Mata Pelajaran (Admin Lainnya)</strong></summary>
+## 2. 🚀 Deskripsi Aplikasi & Arsitektur Sistem
 
-- **Isolasi Kelas Ampuan:** Saat pertama kali masuk, guru memilih kelas yang diampu. Guru hanya dapat melihat dan mengelola nilai siswa pada kelas tersebut.
-- **Kunci Mata Pelajaran Otomatis:** Mata pelajaran pada formulir input nilai otomatis terkunci sesuai data akun guru sehingga tidak terjadi salah input lintas mapel.
-- **Rumus Penilaian & Redistribusi Poin Otomatis:** Nilai akhir dihitung otomatis dari rata-rata komponen ditambah *Nilai Tambah* (maksimal 100). Jika total melebihi 100, sisa poin otomatis didistribusikan ke komponen nilai lainnya.
-- **Integrasi Microsoft Excel (SheetJS):** Unduh template Excel sesuai kelas ampuan, isi atau edit secara offline di Excel, lalu unggah kembali untuk memperbarui nilai secara massal.
-- **Surat Permohonan Koreksi Data Siswa:** Fitur untuk memilih siswa yang salah penulisan NIS/Nama dan mengirimkan surat koreksi digital (atau cetak PDF) langsung ke Admin Pertama.
+**Portal Hasil Penilaian** adalah aplikasi web modern berbasis arsitektur terpisah (*decoupled frontend & serverless backend*) yang dirancang khusus untuk mengelola, menghitung, mempublikasikan, dan memantau hasil evaluasi belajar siswa (seperti jenjang Kelas VII, VIII, XI, maupun ujian khusus seperti TKA dan Ujian Praktik).
 
-</details>
-
-<details>
-<summary><strong>🛡️ C. Panel Admin Utama (Super Admin) & Keamanan Berlapis</strong></summary>
-
-- **Manajemen Master Data Lengkap:** Mengelola **Master Guru Mapel**, **Master Mata Pelajaran / Ujian Lain**, **Master Kelas**, **Master Siswa**, dan **Master Akun**.
-- **Dashboard Statistik & Grafik Batang (Chart.js):** Visualisasi perbandingan jumlah siswa **Aman (≥ KKM)** vs **Remedial (< KKM)** per kelas secara *real-time*.
-- **Keamanan Data & Sesi:**
-  - Password di-hash menggunakan **SHA-256 + Salt** di server; password asli maupun hash tidak pernah dikirim ke antarmuka browser.
-  - Sistem peringatan ketidakaktifan bertingkat (**Peringatan 1/3, 2/3, 3/3**) dengan alarm audio sebelum sesi otomatis keluar (*auto-logout*).
-  - Kartu konfirmasi pengaman sebelum menambah, mengubah, atau menghapus data, serta **Log Audit Keamanan** untuk merekam seluruh aktivitas penting.
-
-</details>
-
-### 🏗️ Arsitektur Sistem
+### 🏗️ Diagram Alur Arsitektur Sistem
 
 ```mermaid
-flowchart LR
-    A[Siswa / Guru / Admin<br/>Browser HP & Laptop] -->|HTTPS JSON Request| B[Frontend Modular<br/>HTML5 • CSS3 • JS]
-    B -->|REST API POST/GET| C[Google Apps Script<br/>Code.gs - Serverless API]
-    C -->|Read / Write / LockService| D[(Google Sheets<br/>Database 8 Tabel)]
-    C -->|CacheService 5 Menit| E[(Server Cache<br/>Anti-Lag & Anti-Crash)]
+graph TD
+    A[Siswa / Publik - Browser] -->|Cari NIS / Nama Lengkap Utuh| B(Frontend Web App: HTML + CSS + JS)
+    C[Guru Mapel & Super Admin] -->|Login + Token Sesi + Auto Idle Guard| B
+    B -->|HTTPS JSON Request + Cache & Retry| D[Google Apps Script API - Code.gs]
+    D -->|Validasi Hak Akses & Rumus Nilai| E[(Google Sheets Database)]
+    E --> E1[Sheet: Akun & SHA-256 Hash]
+    E --> E2[Sheet: GuruMapel & Mapel]
+    E --> E3[Sheet: Kelas & Siswa]
+    E --> E4[Sheet: Nilai & Surat & AuditLog]
 ```
 
----
+### ✨ Fitur Utama (Klik untuk Membuka Rincian)
 
-## 🚀 3. Cara Install, Pasang & Penggunaan
+<details open>
+<summary><strong>🎓 A. Portal Siswa & Publik (Tanpa Login)</strong></summary>
 
-Ikuti langkah-langkah berurutan di bawah ini untuk memasang sistem hingga siap digunakan oleh seluruh warga sekolah.
-
-### 📋 Daftar Periksa Persiapan (Checklist)
-
-- [ ] Memiliki akun **Google** (Gmail / Google Workspace) untuk Google Sheets & Apps Script.
-- [ ] Memiliki folder kode proyek (`index.html`, folder `css/`, folder `js/`, dan `backend/Code.gs`).
-- [ ] Memiliki akun **GitHub / Netlify / Vercel** (opsional, untuk mempublikasikan website secara gratis ke internet).
-
----
-
-### Tahap 1: Memasang Backend & Database (Google Sheets + Apps Script)
-
-1. Buka [Google Drive](https://drive.google.com) dan buat sebuah **Google Spreadsheet** baru, beri nama misalnya: `Database_Portal_Penilaian`.
-2. Pada menu bagian atas Spreadsheet, klik **Ekstensi (Extensions)** ➔ **Apps Script**.
-3. Hapus seluruh kode bawaan pada file `Code.gs`, lalu salin dan tempel seluruh kode dari file **`backend/Code.gs`**.
-4. Klik ikon **Simpan (Save)** atau tekan <kbd>Ctrl</kbd> + <kbd>S</kbd>.
-5. Pada bilah alat (*toolbar*) bagian atas editor Apps Script, pilih fungsi **`setupDatabase`** di samping tombol *Run*, lalu klik **Jalankan (Run)**.
-   - *Catatan:* Saat pertama kali dijalankan, klik **Review Permissions** ➔ pilih akun Google Anda ➔ klik **Advanced** ➔ klik **Go to ... (unsafe)** ➔ klik **Allow**.
-   - Fungsi ini otomatis membuat 8 *sheet* (`Akun`, `GuruMapel`, `Mapel`, `Kelas`, `Siswa`, `Nilai`, `Surat`, `AuditLog`) beserta akun bawaan **Super Admin**.
-6. Publikasikan Apps Script menjadi Web API:
-   - Klik tombol biru **Deploy** (kanan atas) ➔ **New deployment**.
-   - Klik ikon gerigi di samping *Select type* ➔ pilih **Web app**.
-   - Isi *Description*: `API Portal Penilaian v1`.
-   - **Execute as:** pilih `Me (email Anda)`.
-   - **Who has access:** pilih `Anyone` (wajib agar siswa & guru dapat mengakses dari browser tanpa error CORS/login Google).
-   - Klik **Deploy**, lalu **salin URL Web App** yang muncul (berakhiran `/exec`).
-
----
-
-### Tahap 2: Menghubungkan Frontend ke Backend
-
-1. Buka file **`js/config.js`** menggunakan editor teks (VS Code, Notepad++, dll).
-2. Tempelkan URL Web App yang Anda salin pada Tahap 1 ke variabel `API_URL`:
-
-```javascript
-const APP_CONFIG = {
-  API_URL: '[https://script.google.com/macros/s/PASTE_ID_DEPLOYMENT_ANDA_DI_SINI/exec](https://script.google.com/macros/s/PASTE_ID_DEPLOYMENT_ANDA_DI_SINI/exec)',
-  KKM: 75,
-  LEADERBOARD_INTERVAL_MS: 30000, // Rotasi papan peringkat setiap 30 detik
-  IDLE_STEP_1_MS: 180000,         // Peringatan 1 setelah 3 menit diam
-  IDLE_STEP_2_MS: 240000,         // Peringatan 2 setelah 4 menit diam
-  IDLE_LOGOUT_MS: 300000          // Otomatis keluar setelah 5 menit diam
-};
-```
-
-3. Simpan file **`js/config.js`**.
-
----
-
-### Tahap 3: Cara Menjalankan & Mempublikasikan Website
-
-<details>
-<summary><strong>🌐 Opsi A: Publikasi Online Gratis via GitHub Pages (Direkomendasikan)</strong></summary>
-
-1. Buat repositori baru di [GitHub](https://github.com) dengan nama misalnya `portal-hasil-penilaian`.
-2. Unggah seluruh file (`index.html`, folder `css/`, folder `js/`, dan `README.md`) ke repositori tersebut.
-3. Masuk ke menu **Settings** ➔ **Pages** pada repositori GitHub Anda.
-4. Pada bagian **Build and deployment** ➔ *Source*, pilih **Deploy from a branch**, pilih branch `main` dan folder `/ (root)`, lalu klik **Save**.
-5. Tunggu 1–2 menit, tautan website sekolah Anda akan aktif (contoh: `https://username.github.io/portal-hasil-penilaian/`).
+1. **Pencarian Presisi Tinggi**: Siswa wajib memasukkan **NIS** atau **Nama Lengkap** secara utuh (mencegah kebocoran daftar seluruh siswa secara acak), kemudian memilih mata pelajaran atau jenis ujian yang ingin dilihat.
+2. **4 Variasi Tampilan Kartu Hasil Nilai**:
+   - **Default Card**: Menampilkan komponen lengkap (Nilai 1 / Slide 1, Nilai 2 / Slide 2, Nilai 3 / Presentasi, Nilai Tambah, dan Nilai Akhir).
+   - **Nilai Akhir Saja**: Tampilan ringkas yang menonjolkan skor akhir dan poin tambahan.
+   - **Kartu Khusus TKA (Tes Kemampuan Akademik)**: Dirancang khusus untuk menampilkan sub-nilai literasi/numerasi (seperti TKA Bahasa Indonesia, Matematika, Bahasa Inggris, dll).
+   - **Kartu Kustom (Input Sendiri)**: Menampilkan label komponen penilaian yang disesuaikan langsung oleh Admin.
+3. **Notifikasi Status & Audio Interaktif**:
+   - **Status AMAN (≥ KKM)**: Efek suara apresiasi positif dan lencana hijau kelulusan.
+   - **Status REMEDIAL (< KKM)**: Efek suara peringatan lembut, penjelasan instruksi remedial, serta tombol **Salin Pesan WhatsApp Siap Kirim** yang sopan dan terisi otomatis.
+4. **Papan Peringkat Apresiasi (Auto-Rotate 30 Detik)**:
+   - Menampilkan 6 kategori nilai terbaik (Pembuatan Slide, Presentasi, dan Total Akhir baik per Kelompok maupun per Individu) yang berganti otomatis setiap 30 detik dan dapat difilter berdasarkan Kelas maupun Mata Pelajaran.
+5. **Tema Otomatis Siang/Malam**: Menyesuaikan mode *Light* (06:00–17:59) dan *Dark* (18:00–05:59) secara *real-time* sesuai jam lokal perangkat.
 
 </details>
 
 <details>
-<summary><strong>💻 Opsi B: Menjalankan Secara Lokal di Komputer / Laptop</strong></summary>
+<summary><strong>🔐 B. Panel Administrator & Keamanan Berlapis</strong></summary>
 
-1. Buka folder proyek menggunakan **Visual Studio Code**.
-2. Pasang ekstensi **Live Server** (atau jalankan perintah `npx serve .` di terminal).
-3. Klik kanan pada **`index.html`** ➔ pilih **Open with Live Server**.
-4. Aplikasi siap diakses melalui `http://127.0.0.1:5500`.
+1. **Pemisahan Hak Akses (Role-Based Access Control)**:
+   - **Admin Pertama (Super Admin)**: Mengelola seluruh data master (*Master Guru Mapel, Master Mapel/Ujian, Master Kelas, Master Siswa, Master Akun, Kotak Surat Koreksi,* dan *Log Keamanan*).
+   - **Guru Mata Pelajaran (Admin Lainnya)**: Saat pertama kali masuk, wajib memilih kelas yang diampu. Mata pelajaran pada form input nilai otomatis dikunci berdasarkan data pada *Master Akun* sehingga tidak dapat diubah atau disalahgunakan.
+2. **Keamanan Password & Sesi**:
+   - Password disimpan menggunakan *hashing* satu arah **SHA-256 + Salt** di server Google Apps Script. Password asli maupun *hash* **tidak pernah dikirim** ke antarmuka web.
+   - Dilengkapi **Peringatan Tidak Aktif (Idle Warning Tahap 1, 2, dan 3)** dengan sinyal audio dan *auto-logout* demi mencegah penyalahgunaan komputer bersama.
+3. **Rumus Nilai Akhir & Distribusi Poin Tambah Otomatis**:
+   - Jika `Nilai Akhir + Nilai Tambah` melebihi `100`, sistem otomatis menahan Nilai Akhir di angka `100` dan mendistribusikan kelebihan poin ke komponen `Nilai 1`, `Nilai 2`, atau `Nilai 3` secara adil hingga maksimal `100`.
+4. **Integrasi Excel & Surat Koreksi Data Siswa**:
+   - Unduh template Excel sesuai kelas ampuan, isi atau perbarui nilai secara massal di Excel, lalu unggah kembali.
+   - Fitur **Surat Permohonan Koreksi Data Siswa** untuk melaporkan kesalahan penulisan NIS atau Nama siswa langsung ke kotak masuk Admin Pertama (dapat dicetak/disimpan sebagai PDF).
 
 </details>
 
 ---
 
-### Tahap 4: Panduan Penggunaan Aplikasi
+<div id="id-3-cara-install-pasang-dan-penggunaan"></div>
 
-1. **Login Pertama Admin Utama (Super Admin):**
-   - Klik tombol **Login Admin** di pojok kanan atas.
-   - Gunakan kredensial bawaan:
-     - **Username:** `admin`
-     - **Password:** `admin123`
-   - *Segera ubah password bawaan ini melalui menu **Master Akun** demi keamanan.*
-2. **Urutan Pengisian Data oleh Admin Utama:**
-   - **Master Guru Mapel:** Tambahkan daftar nama guru mata pelajaran.
-   - **Master Mapel / Ujian:** Tambahkan mata pelajaran/ujian, pilih guru pengampu, KKM, serta pilih **Bentuk Card Hasil** (*Default*, *Nilai Akhir*, *TKA*, atau *Kustom*).
-   - **Master Kelas:** Tambahkan daftar kelas (misal `VII-A`, `VIII-B`, `XI-1`).
-   - **Master Siswa:** Masukkan data `NIS`, `Nama Lengkap`, `Kelas`, dan `Kelompok` (opsional).
-   - **Master Akun:** Buatkan akun untuk masing-masing Guru Mata Pelajaran beserta mata pelajaran yang diampu.
-3. **Input Nilai oleh Guru Mata Pelajaran:**
-   - Guru login menggunakan akun masing-masing ➔ centang kelas yang diampu pada pop-up awal.
-   - Nilai dapat diinput satu per satu melalui tombol **+ Input Nilai** (pencarian nama/NIS siswa otomatis), atau melalui **Download Template Excel** ➔ isi/edit di Excel ➔ **Upload Excel Nilai**.
-4. **Pengecekan Nilai oleh Siswa:**
-   - Siswa membuka halaman utama ➔ mengetik **NIS** atau **Nama Lengkap** secara utuh ➔ klik **Cari Nilai** ➔ memilih mata pelajaran ➔ melihat status **AMAN** atau menyalin template WhatsApp jika **REMEDIAL**.
+## 3. 🛠️ Cara Install, Pasang, dan Penggunaan
+
+Ikuti panduan langkah demi langkah di bawah ini untuk memasang aplikasi dari awal hingga siap digunakan oleh siswa dan guru.
+
+<details open>
+<summary><strong>Langkah 1: Menyiapkan Database Google Sheets & Backend Apps Script</strong></summary>
+
+1. Buka [Google Drive](https://drive.google.com), klik **Baru (+)** ➔ **Google Spreadsheet**, lalu beri nama misalnya `Database Portal Hasil Penilaian`.
+2. Pada menu atas Spreadsheet, klik **Ekstensi (Extensions)** ➔ **Apps Script**.
+3. Hapus seluruh kode bawaan di file `Code.gs`, lalu salin dan tempel seluruh kode dari file **`backend/Code.gs`**.
+4. Klik ikon **Simpan (💾)**, kemudian pada bilah atas pilih fungsi **`setupDatabase`** dan klik **Jalankan (Run)**.
+   - *Catatan*: Saat pertama kali dijalankan, Google akan meminta izin akses. Klik **Review Permissions** ➔ pilih akun Google Anda ➔ klik **Advanced** ➔ **Go to ... (unsafe)** ➔ **Allow**.
+   - Fungsi ini otomatis membuat 8 lembar kerja (*Akun, GuruMapel, Mapel, Kelas, Siswa, Nilai, Surat, AuditLog*) beserta akun bawaan Super Admin:
+     - **Username**: `admin`
+     - **Password**: `admin123` *(segera ubah setelah berhasil masuk!)*
+5. Klik tombol **Terapkan (Deploy)** di pojok kanan atas ➔ **Deployment baru (New deployment)**.
+6. Pada bagian *Pilih jenis (Select type)*, klik ikon roda gigi ➔ pilih **Aplikasi web (Web app)**:
+   - **Deskripsi**: `API Portal Hasil Penilaian v3`
+   - **Jalankan sebagai (Execute as)**: `Saya (Me)`
+   - **Yang memiliki akses (Who has access)**: `Siapa saja (Anyone)`
+7. Klik **Terapkan (Deploy)**, lalu salin **URL Aplikasi Web (`https://script.google.com/macros/s/.../exec`)**.
+
+</details>
+
+<details>
+<summary><strong>Langkah 2: Menghubungkan Frontend & Memasang (Hosting Gratis)</strong></summary>
+
+1. Pastikan struktur folder proyek Anda tersusun lengkap seperti berikut:
+   ```text
+   portal-penilaian/
+   ├── index.html
+   ├── css/
+   │   └── style.css
+   └── js/
+       ├── config.js
+       ├── theme-audio.js
+       ├── api.js
+       ├── ui-components.js
+       ├── guest.js
+       ├── security.js
+       ├── excel-letter.js
+       └── admin.js
+   ```
+2. Buka file **`js/config.js`** dan tempel URL Web App dari Langkah 1 ke parameter `API_URL`:
+   ```javascript
+   const APP_CONFIG = {
+     API_URL: '[https://script.google.com/macros/s/PASTE_URL_WEB_APP_ANDA_DISINI/exec](https://script.google.com/macros/s/PASTE_URL_WEB_APP_ANDA_DISINI/exec)',
+     KKM: 75,
+     LEADERBOARD_INTERVAL_MS: 30000,
+     IDLE_WARN_1_MS: 180000,
+     IDLE_WARN_2_MS: 300000,
+     IDLE_WARN_3_MS: 420000,
+     IDLE_LOGOUT_MS: 480000
+   };
+   ```
+3. **Cara Memasang Online (Pilih Salah Satu — Gratis)**:
+   - **GitHub Pages**: Unggah seluruh folder ke repositori GitHub ➔ buka **Settings** ➔ **Pages** ➔ pilih branch `main` dan folder `/ (root)` ➔ klik **Save**.
+   - **Vercel / Netlify**: Seret dan lepas (*drag & drop*) folder `portal-penilaian` ke dasbor [Netlify Drop](https://app.netlify.com/drop) atau hubungkan repositori ke [Vercel](https://vercel.com).
+   - **Penggunaan Lokal**: Buka file `index.html` langsung di peramban modern (Chrome, Edge, Firefox, Safari).
+
+</details>
+
+<details>
+<summary><strong>Langkah 3: Panduan Penggunaan (Super Admin, Guru Mapel, & Siswa)</strong></summary>
+
+- **Bagi Admin Pertama (Super Admin)**:
+  1. Klik **Login Admin** di pojok kanan atas dan masuk menggunakan akun awal (`admin` / `admin123`), lalu segera ganti password pada tab **Master Akun**.
+  2. Isi data secara berurutan: **Master Guru Mapel** (opsional) ➔ **Master Mapel / Ujian** (atur nama mapel/ujian dan pilih bentuk *card* hasil) ➔ **Master Kelas** ➔ **Master Siswa** ➔ **Master Akun** (buat akun untuk masing-masing guru mapel).
+- **Bagi Guru Mata Pelajaran**:
+  1. Masuk menggunakan username dan password yang diberikan oleh Admin Pertama.
+  2. Pada jendela *pop-up* pertama, centang kelas-kelas yang Anda ampu lalu klik **Simpan Kelas Ampuan**.
+  3. Masuk ke tab **Master Input Nilai**, klik **+ Input Nilai** (cari nama/NIS siswa, mata pelajaran otomatis terisi sesuai akun Anda), atau gunakan **Download Template Excel** ➔ isi/edit di Excel ➔ **Upload Excel Nilai**.
+- **Bagi Siswa**:
+  1. Buka halaman utama portal tanpa perlu login.
+  2. Ketik **NIS** atau **Nama Lengkap** secara utuh pada kolom pencarian dan klik **Cari Nilai**.
+  3. Pilih tab **Mata Pelajaran / Ujian** yang tersedia untuk melihat rincian nilai atau menyalin pesan template WhatsApp jika berstatus Remedial.
+
+</details>
 
 ---
 
-## 🌍 4. Kenapa Proyek Ini Open-Source?
+<div id="id-4-kenapa-ini-open-source"></div>
 
-Proyek **Portal Hasil Penilaian** dirilis secara **Open-Source** di bawah **Lisensi MIT** karena keyakinan bahwa teknologi pendidikan yang mendasar harus dapat diakses oleh setiap sekolah tanpa terhalang biaya lisensi:
+## 4. 🌍 Kenapa Ini Open-Source?
 
-1. **Demokratisasi Teknologi Sekolah:** Tidak semua sekolah memiliki anggaran besar untuk menyewa sistem informasi akademik berbayar. Dengan arsitektur gratis ini, sekolah di daerah mana pun dapat memiliki portal nilai modern yang cepat dan profesional.
-2. **Transparansi & Keamanan Data:** Karena seluruh kode sumber (*frontend* maupun *backend* `Code.gs`) terbuka 100%, guru TIK dan operator sekolah dapat memeriksa sendiri bahwa data siswa tersimpan sepenuhnya di akun **Google Drive milik sekolah sendiri**, tanpa perantara pihak ketiga.
-3. **Kebebasan Kustomisasi Kurikulum:** Setiap jenjang pendidikan (SD, SMP, SMA, SMK, Madrasah, hingga lembaga kursus) memiliki komponen penilaian yang berbeda. Kode modular memudahkan siapa saja untuk menyesuaikan rumus nilai, tema warna, maupun format kartu rapor.
-4. **Kolaborasi Berkelanjutan:** Terbuka bagi para pengembang, guru, dan mahasiswa untuk ikut menyempurnakan fitur, melaporkan *bug*, atau menambahkan integrasi baru bagi kemajuan pendidikan.
+Proyek **Portal Hasil Penilaian** dirilis secara terbuka (*open-source*) di bawah lisensi **MIT** atas dasar keyakinan bahwa teknologi pendidikan yang berkualitas harus dapat diakses oleh setiap sekolah, madrasah, maupun pendidik tanpa hambatan biaya lisensi:
+
+1. **Pemerataan Akses Digital Sekolah**: Tidak semua institusi pendidikan memiliki anggaran pengadaan perangkat lunak mahal. Dengan sifat *open-source* dan berbasis Google Sheets, sekolah mana pun dapat langsung memakainya secara gratis.
+2. **Transparansi & Keamanan Data**: Setiap pengelola TI sekolah atau pengembang dapat memeriksa langsung baris demi baris kode sumbernya untuk memastikan tidak ada pencurian data siswa maupun skrip tersembunyi.
+3. **Kebebasan Kustomisasi**: Setiap sekolah memiliki aturan penilaian unik (misalnya KKM berbeda, format TKA, ujian praktik, atau penilaian proyek). Kode sumber terbuka memudahkan siapa saja menyesuaikan sistem sesuai kebutuhan masing-masing.
+4. **Kolaborasi Berkelanjutan**: Terbuka bagi sesama pengembang, guru TIK, dan praktisi pendidikan untuk ikut menyempurnakan fitur di masa mendatang.
 
 ---
 
-## ❤️ 5. Dukung Proyek Ini Tetap Gratis (Donasi)
+<div id="id-5-dukungan--donasi"></div>
 
-Aplikasi ini dikembangkan dan dipelihara secara mandiri agar tetap **100% gratis, bebas iklan, dan terbuka untuk seluruh sekolah**. Jika aplikasi ini bermanfaat bagi sekolah, guru, atau kegiatan belajar mengajar Anda, Anda dapat memberikan dukungan sukarela untuk membantu biaya pengembangan fitur baru, pemeliharaan dokumentasi, serta riset alat bantu pendidikan gratis lainnya.
+## 5. ❤️ Dukungan & Donasi (Agar Proyek Tetap Gratis)
+
+Aplikasi ini dikembangkan dan dipelihara secara mandiri agar tetap **100% gratis** bagi para guru, siswa, dan sekolah di seluruh Indonesia. Jika aplikasi ini membantu meringankan pekerjaan administrasi Anda dan Anda ingin mendukung pengembangan fitur-fitur berikutnya, Anda dapat memberikan dukungan sukarela melalui saluran berikut:
 
 <table>
   <tr>
-    <th width="52%" align="center">🏦 Transfer Bank & E-Wallet</th>
-    <th width="48%" align="center">📱 Scan QR Code (QRIS)</th>
-  </tr>
-  <tr>
+    <td align="center" width="260">
+      <strong>📱 Scan QR Code (Nomor BRI)</strong><br/><br/>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=427401025594536&margin=10" width="190" height="190" alt="QR Code Nomor Rekening BRI 427401025594536" /><br/>
+      <sub>Kode QR Nomor Rekening BRI:<br/><code>427401025594536</code></sub>
+    </td>
     <td valign="top">
-      <p><strong>Silakan salin nomor rekening / e-wallet berikut:</strong></p>
-      <ul>
-        <li><strong>Bank BCA:</strong> <code>0000-0000-00</code><br/><sub>a.n. Nama Pemilik Rekening</sub></li>
-        <li><strong>Bank BRI / Mandiri:</strong> <code>0000-0000-0000-000</code><br/><sub>a.n. Nama Pemilik Rekening</sub></li>
-        <li><strong>DANA / GoPay / OVO / ShopeePay:</strong> <code>0812-0000-0000</code><br/><sub>a.n. Nama Pemilik Akun</sub></li>
-      </ul>
-      <p><em>Catatan untuk Pengelola Repositori: Ganti nomor rekening di atas dengan rekening resmi Anda sebelum mempublikasikan repositori.</em></p>
-    </td>
-    <td align="center" valign="middle">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/username/portal-hasil-penilaian" alt="QR Code Donasi QRIS" width="190" height="190" />
-      <br/>
-      <sub><strong>Scan menggunakan aplikasi Mobile Banking / E-Wallet</strong><br/>(Ganti URL gambar <code>src</code> di atas dengan file <code>assets/qris.png</code> Anda)</sub>
+      <h3>💳 Transfer Bank & E-Wallet</h3>
+      <p>Seluruh dukungan digunakan untuk riset, pemeliharaan dokumentasi, serta pengembangan aplikasi pendidikan gratis lainnya.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Metode Pembayaran</th>
+            <th>Nomor Rekening / Tujuan</th>
+            <th>Atas Nama</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>🏦 Bank BRI</strong></td>
+            <td><code>427401025594536</code></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+          </tr>
+          <tr>
+            <td><strong>🧡 ShopeePay</strong></td>
+            <td><code>081807982673</code></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><em>Terima kasih atas kebaikan hati dan dukungan Anda untuk kemajuan teknologi pendidikan Indonesia! 🙏</em></p>
     </td>
   </tr>
 </table>
 
-> **Bentuk Dukungan Non-Materi:** Anda juga dapat mendukung proyek ini secara gratis dengan memberikan **⭐ Star** pada repositori ini, membagikan tautannya kepada rekan guru/operator sekolah lain, atau berkontribusi melalui *Pull Request*.
-
----
 ---
 
-<a id="-english-version"></a>
-# 🇬🇧 English Version
+<div id="id-6-tentang-pembuat"></div>
 
-> **Quick Navigation:**
-> [1. Why Was This Built?](#-1-why-was-this-built) •
-> [2. System Description](#-2-system-description) •
-> [3. Installation, Setup & Usage Guide](#-3-installation-setup--usage-guide) •
-> [4. Why Open-Source?](#-4-why-is-this-project-open-source) •
-> [5. Support & Donations](#-5-support-this-free-project-donation)
-
----
-
-## 💡 1. Why Was This Built?
-
-During school academic evaluations (Daily Assessments, Group Presentations, Mid-Term Exams, Final Exams, and Academic Competency Tests), teachers and students frequently encounter recurring operational bottlenecks:
+## 6. 👨‍💻 Tentang Pembuat
 
 <table>
   <tr>
-    <th width="50%">❌ Common Classroom Challenges</th>
-    <th width="50%">✅ How This System Solves Them</th>
-  </tr>
-  <tr>
-    <td><strong>Crowded Teacher Rooms & Delays:</strong> Students line up at the staff room simply to check their scores or ask whether they need remedial work.</td>
-    <td><strong>24/7 Self-Service Lookup:</strong> Students enter their exact Student ID (NIS) or Full Name to immediately view score breakdowns, passing status, and remedial instructions.</td>
-  </tr>
-  <tr>
-    <td><strong>Lack of Score Privacy:</strong> Posting printed grade sheets on notice boards or sharing full PDF lists in class chats exposes individual grades to peers.</td>
-    <td><strong>Strict Exact-Match Privacy:</strong> The search engine enforces an exact match on Student ID or Full Name, ensuring each student only accesses their own record.</td>
-  </tr>
-  <tr>
-    <td><strong>Unstructured Remedial Messages:</strong> Students often message teachers on WhatsApp without stating their full name, class, or subject politely.</td>
-    <td><strong>Auto-Filled WhatsApp Remedial Template:</strong> When a student's status is <em>Remedial</em>, the card generates a polite, ready-to-copy WhatsApp template pre-filled with their details.</td>
-  </tr>
-  <tr>
-    <td><strong>High Server Costs & Manual Admin Work:</strong> Commercial school portals require recurring monthly VPS/hosting fees that strain school budgets.</td>
-    <td><strong>100% Free Serverless Architecture:</strong> Powered by <strong>Google Sheets & Google Apps Script</strong> as a zero-cost, reliable cloud database and API.</td>
+    <td>
+      <h3>Ilham Muhammad Furqon, S.Kom.</h3>
+      <p><strong>Pengembang Perangkat Lunak & Pemerhati Teknologi Pendidikan</strong></p>
+      <p>
+        <strong>Ilham Muhammad Furqon, S.Kom.</strong> adalah lulusan Sarjana Komputer (S.Kom.) yang berfokus pada pengembangan solusi sistem informasi yang ringan, aman, dan berdampak langsung bagi dunia pendidikan. Melalui <strong>Portal Hasil Penilaian</strong>, beliau berkomitmen menghadirkan jembatan komunikasi akademik yang transparan antara guru dan siswa tanpa membebani sekolah dengan biaya infrastruktur yang tinggi.
+      </p>
+    </td>
   </tr>
 </table>
 
 ---
+---
 
-## 📖 2. System Description
+<!-- ===================================================================== -->
+<!--               SECTION 2: ENGLISH VERSION (SECONDARY)                  -->
+<!-- ===================================================================== -->
 
-**Portal Hasil Penilaian (Academic Assessment Result Portal)** is a modern web application engineered with a **Modular Frontend (HTML5, CSS3, Vanilla JavaScript)** and a **Serverless Backend (Google Apps Script + Google Sheets)**. It enforces strict role-based separation across **3 primary user roles**:
+<div id="-english-version-secondary"></div>
 
-### 🎯 Key Features by Role
+# 🇬🇧 Secondary Documentation (English Version)
 
-<details open>
-<summary><strong>👨‍🎓 A. Student & Public Portal (No Login Required)</strong></summary>
+> **Quick Navigation (Click to jump to any section):**
+>
+> <a href="#en-1-why-was-this-built"><kbd>1. Why Was This Built?</kbd></a> &nbsp;
+> <a href="#en-2-project-description"><kbd>2. Description & Features</kbd></a> &nbsp;
+> <a href="#en-3-installation-deployment-and-usage"><kbd>3. Installation, Setup & Usage</kbd></a> &nbsp;
+> <a href="#en-4-why-is-this-open-source"><kbd>4. Why Open-Source?</kbd></a> &nbsp;
+> <a href="#en-5-support--donation"><kbd>5. Donation & QR Code</kbd></a> &nbsp;
+> <a href="#en-6-about-the-creator"><kbd>6. About the Creator</kbd></a>
 
-- **Private Exact-Match Lookup:** Students search using their complete **Student ID (NIS)** or **Full Name**, then switch between available **Subjects / Exam Types**.
-- **4 Dynamic Result Card Layouts:** Result cards adapt automatically to the exam configuration set by the administrator:
-  1. *Default Layout:* Displays Score 1 (Slide 1), Score 2 (Slide 2), Score 3 (Presentation), Bonus Points, and Final Score.
-  2. *Final Score Only:* Clean summary card highlighting the final score and passing threshold (KKM).
-  3. *Specialized TKA Card (Academic Competency Test):* Displays subject-specific competency breakdowns (e.g., Literacy/Indonesian, Numeracy/Mathematics, Reasoning).
-  4. *Custom Self-Defined Layout:* Administrators define custom component labels tailored to any exam format.
-- **Web Audio Feedback & Print Card:** Subtle synthesized audio cues upon revealing results (celebratory chime for **PASS / AMAN** vs. gentle alert for **REMEDIAL**), plus a built-in **Print Grade Card** button.
-- **One-Click Remedial WhatsApp Template:** Automatically populates the student's full name, class, and subject into a polite message ready to send to the subject teacher.
-- **Auto-Rotating Leaderboard (30-Second Cycle):** Showcases top performers across **6 categories** (Slide Creation, Presentation, and Final Total — both per Group and per Individual) with Class and Subject filters.
-- **Automatic Realtime Light/Dark Mode:** Seamlessly switches between daytime (*Light*) and nighttime (*Dark*) themes based on the device's local clock.
+---
 
-</details>
+<div id="en-1-why-was-this-built"></div>
 
-<details>
-<summary><strong>👩‍🏫 B. Subject Teacher Panel (Regular Admin)</strong></summary>
+## 1. 💡 Why Was This Built?
 
-- **Class-Scoped Isolation:** Upon first login, teachers select the classes they teach. All student lists, grade entries, and statistics are strictly scoped to their assigned classes.
-- **Locked Subject Binding:** The subject field during grade entry is automatically locked to the teacher's account profile on both frontend and server levels to prevent cross-subject errors.
-- **Automated Grading Formula & Overflow Redistribution:** Automatically calculates final scores from component averages plus *Bonus Points* (capped at 100). Any excess points above 100 are automatically distributed back into the component scores.
-- **Microsoft Excel Integration (SheetJS):** Download pre-formatted Excel templates for assigned classes, input or edit grades offline in Excel, and bulk-upload updates back into the system.
-- **Student Data Correction Letter System:** Select one, multiple, or all students with misspelled names or IDs and submit a digital correction request (or printable PDF letter) directly to the Super Admin.
+During school academic evaluations, publishing exam scores, project grades, and remedial notices often encounters real-world technical and administrative bottlenecks. **Portal Hasil Penilaian** (*Academic Assessment Result Portal*) was created to solve four core challenges:
 
-</details>
+| Real-World Challenge | How This System Solves It |
+| :--- | :--- |
+| **1. Student Anxiety & Grade Uncertainty**<br/>Students frequently wait days or repeatedly message teachers just to find out whether they passed the minimum passing grade (KKM) or need remedial work. | **24/7 Self-Service & Transparent Access**<br/>Students simply enter their full **Student ID (NIS)** or **Full Name** to immediately inspect their subject scores and passing status in real time. |
+| **2. Repetitive Teacher Administrative Workload**<br/>Teachers spend hours manually calculating final scores, answering individual inquiries, and formatting spreadsheets. | **Automated Formulas, Excel Sync & WA Templates**<br/>Final score calculations, extra-point overflow distribution, Excel template import/export, and polite remedial WhatsApp templates work automatically. |
+| **3. Expensive Server & Database Hosting Costs**<br/>Many schools and individual educators lack dedicated budgets for VPS servers, paid cloud databases, or proprietary LMS licenses. | **100% Free Serverless Infrastructure**<br/>Powered by **Google Sheets** as the database and **Google Apps Script** as the backend API, paired with a lightweight static frontend hostable for free anywhere. |
+| **4. Unstructured Remedial Messages**<br/>Students often message teachers on WhatsApp without stating their full name, class, or the specific subject they are asking about. | **Auto-Filled Remedial WhatsApp Template**<br/>Whenever a student scores below the passing threshold, the result card provides clear instructions and a one-click copyable WhatsApp message pre-filled with their details. |
 
-<details>
-<summary><strong>🛡️ C. Super Admin Panel & Multi-Layer Security</strong></summary>
+---
 
-- **Complete Master Data Management:** Full CRUD control over **Subject Teachers**, **Subjects / Custom Exams**, **Classes**, **Students**, and **User Accounts**.
-- **Real-Time Analytics & Bar Chart (Chart.js):** Visualizes **Passing (≥ KKM)** vs. **Remedial (< KKM)** student counts per class.
-- **Enterprise-Grade Security Controls:**
-  - Passwords are salted and hashed with **SHA-256** on the server; neither raw passwords nor hashes are ever exposed to the frontend UI.
-  - Progressive 3-stage inactivity warning modal (**Warning 1/3, 2/3, 3/3**) with Web Audio alert before automatic session termination.
-  - Confirmation safeguard cards for all Add, Edit, Delete, and Bulk Delete actions, backed by a tamper-evident **Security Audit Log**.
+<div id="en-2-project-description"></div>
 
-</details>
+## 2. 🚀 Project Description & System Architecture
 
-### 🏗️ System Architecture
+**Portal Hasil Penilaian** is a modern web application built on a decoupled frontend and serverless backend architecture designed to manage, calculate, publish, and analyze student assessment outcomes (including junior/senior high school classes as well as specialized assessments such as Academic Aptitude Tests / TKA and Practical Exams).
+
+### 🏗️ System Architecture Flowchart
 
 ```mermaid
-flowchart LR
-    A[Students / Teachers / Admins<br/>Mobile & Desktop Browsers] -->|HTTPS JSON Request| B[Modular Frontend<br/>HTML5 • CSS3 • JS]
-    B -->|REST API POST/GET| C[Google Apps Script<br/>Code.gs - Serverless API]
-    C -->|Read / Write / LockService| D[(Google Sheets<br/>8-Sheet Database)]
-    C -->|CacheService 5 Mins| E[(Server Cache<br/>High-Concurrency Ready)]
+graph TD
+    A[Students / Public - Browser] -->|Exact Search: Student ID or Full Name| B(Frontend Web App: HTML + CSS + JS)
+    C[Subject Teachers & Super Admin] -->|Login + Session Token + Idle Guard| B
+    B -->|HTTPS JSON Request + Cache & Retry| D[Google Apps Script API - Code.gs]
+    D -->|RBAC Verification & Grade Formulas| E[(Google Sheets Database)]
+    E --> E1[Sheet: Akun & SHA-256 Hash]
+    E --> E2[Sheet: GuruMapel & Mapel]
+    E --> E3[Sheet: Kelas & Siswa]
+    E --> E4[Sheet: Nilai & Surat & AuditLog]
 ```
 
+### ✨ Core Features (Click to Expand Details)
+
+<details open>
+<summary><strong>🎓 A. Public Student Portal (No Login Required)</strong></summary>
+
+1. **Exact-Match Search Privacy**: Students must enter their complete **NIS (Student ID)** or **Full Name** (preventing unauthorized browsing of the entire student directory), then select the desired subject or exam tab.
+2. **4 Dynamic Result Card Layouts**:
+   - **Default Card**: Displays complete assessment components (Score 1 / Slide 1, Score 2 / Slide 2, Score 3 / Presentation, Bonus Points, and Final Score).
+   - **Final Score Only Card**: A clean, streamlined card highlighting the final grade and bonus points.
+   - **TKA Card (Academic Aptitude Test)**: Tailored for specialized sub-scores such as Indonesian Literacy, Mathematics Numeracy, and English Reasoning.
+   - **Custom Card**: Displays custom component labels defined directly by the Administrator.
+3. **Status Feedback & Interactive Web Audio**:
+   - **SAFE / PASSED (≥ KKM)**: Synthesized celebratory chime and green completion badge.
+   - **REMEDIAL (< KKM)**: Gentle alert tone, remedial instructions, and a one-click copyable **WhatsApp Message Template** pre-filled with the student's identity.
+4. **Auto-Rotating Leaderboard (30-Second Interval)**:
+   - Highlights top performers across 6 categories (Slide Creation, Presentation, and Final Total for both Groups and Individuals), rotating every 30 seconds with Class and Subject filters.
+5. **Real-Time Auto Light/Dark Theme**: Automatically switches between Light mode (06:00–17:59) and Dark mode (18:00–05:59) based on local device time.
+
+</details>
+
+<details>
+<summary><strong>🔐 B. Administrator Panel & Multi-Layer Security</strong></summary>
+
+1. **Role-Based Access Control (RBAC)**:
+   - **First Admin (Super Admin)**: Full control over all master records (*Teachers, Subjects/Exams, Classes, Students, Accounts, Correction Inbox,* and *Security Audit Logs*).
+   - **Subject Teachers (Secondary Admins)**: On first login, teachers select the classes they teach. The subject field during grade entry is automatically locked to their assigned subject from the Account Master.
+2. **Password & Session Security**:
+   - Passwords are secured with one-way **SHA-256 + Salt** hashing on Google Apps Script. Plaintext passwords and hashes are **never transmitted** to the frontend UI.
+   - Includes **3-Stage Inactivity Warnings (Warning 1, 2, and 3)** with audio alerts and automatic logout to protect shared school computers.
+3. **Automated Grade & Overflow Distribution Formula**:
+   - When `Final Score + Bonus Points` exceeds `100`, the system caps the Final Score at `100` and evenly distributes overflow points across `Score 1`, `Score 2`, and `Score 3` (up to `100` each).
+4. **Excel Integration & Student Data Correction Letters**:
+   - Download pre-formatted Excel templates scoped to assigned classes, enter or edit scores offline, and upload them back in bulk.
+   - Built-in **Correction Letter System** allowing teachers to flag Student ID or Name typos directly to the Super Admin's inbox (with print/PDF support).
+
+</details>
+
 ---
 
-## 🚀 3. Installation, Setup & Usage Guide
+<div id="en-3-installation-deployment-and-usage"></div>
 
-Follow the step-by-step instructions below to deploy the portal for your school or institution.
+## 3. 🛠️ Installation, Deployment, and Usage Guide
 
-### 📋 Preparation Checklist
+Follow the step-by-step instructions below to set up and deploy the portal from scratch.
 
-- [ ] A **Google Account** (Gmail or Google Workspace) for Google Sheets & Apps Script.
-- [ ] The complete project files (`index.html`, `css/` folder, `js/` folder, and `backend/Code.gs`).
-- [ ] A free **GitHub / Netlify / Vercel** account (optional, for publishing the frontend online).
+<details open>
+<summary><strong>Step 1: Set Up Google Sheets Database & Apps Script Backend</strong></summary>
 
----
-
-### Step 1: Set Up the Serverless Backend (Google Sheets + Apps Script)
-
-1. Go to [Google Drive](https://drive.google.com) and create a new **Google Spreadsheet** (e.g., `Assessment_Portal_Database`).
+1. Open [Google Drive](https://drive.google.com), click **New (+)** ➔ **Google Sheets**, and name it `Portal Hasil Penilaian Database`.
 2. In the top menu bar, navigate to **Extensions** ➔ **Apps Script**.
-3. Delete any default placeholder code in `Code.gs`, then paste the entire contents of **`backend/Code.gs`**.
-4. Click the **Save** icon or press <kbd>Ctrl</kbd> + <kbd>S</kbd>.
-5. Select the **`setupDatabase`** function from the top toolbar dropdown and click **Run**.
-   - *Note:* On first run, click **Review Permissions** ➔ select your Google account ➔ click **Advanced** ➔ click **Go to ... (unsafe)** ➔ click **Allow**.
-   - This automatically initializes all 8 database sheets (`Akun`, `GuruMapel`, `Mapel`, `Kelas`, `Siswa`, `Nilai`, `Surat`, `AuditLog`) and creates the default **Super Admin** account.
-6. Deploy Apps Script as a Web API:
-   - Click the blue **Deploy** button (top right) ➔ **New deployment**.
-   - Click the gear icon next to *Select type* ➔ choose **Web app**.
-   - Enter a *Description* (e.g., `Assessment Portal API v1`).
-   - **Execute as:** select `Me (your email)`.
-   - **Who has access:** select `Anyone` (required so students and teachers can connect from their browsers without Google sign-in prompts).
-   - Click **Deploy** and **copy the generated Web App URL** (ending in `/exec`).
-
----
-
-### Step 2: Connect the Frontend to Your Backend
-
-1. Open **`js/config.js`** in your code editor.
-2. Paste your copied Web App URL into `API_URL`:
-
-```javascript
-const APP_CONFIG = {
-  API_URL: '[https://script.google.com/macros/s/PASTE_YOUR_DEPLOYMENT_ID_HERE/exec](https://script.google.com/macros/s/PASTE_YOUR_DEPLOYMENT_ID_HERE/exec)',
-  KKM: 75,
-  LEADERBOARD_INTERVAL_MS: 30000, // Rotate leaderboard category every 30 seconds
-  IDLE_STEP_1_MS: 180000,         // Warning 1 after 3 minutes of inactivity
-  IDLE_STEP_2_MS: 240000,         // Warning 2 after 4 minutes of inactivity
-  IDLE_LOGOUT_MS: 300000          // Auto-logout after 5 minutes of inactivity
-};
-```
-
-3. Save **`js/config.js`**.
-
----
-
-### Step 3: Run Locally or Publish Online for Free
-
-<details>
-<summary><strong>🌐 Option A: Free Online Hosting via GitHub Pages (Recommended)</strong></summary>
-
-1. Create a new public repository on [GitHub](https://github.com) (e.g., `assessment-result-portal`).
-2. Upload `index.html`, the `css/` folder, the `js/` folder, and `README.md` to the repository.
-3. Navigate to **Settings** ➔ **Pages** inside your repository.
-4. Under **Build and deployment** ➔ *Source*, select **Deploy from a branch**, choose `main` and `/ (root)`, then click **Save**.
-5. Within 1–2 minutes, your live school portal will be accessible at `https://your-username.github.io/assessment-result-portal/`.
+3. Delete any default code in `Code.gs`, then paste the entire code from **`backend/Code.gs`**.
+4. Click **Save (💾)**, select the **`setupDatabase`** function from the top toolbar dropdown, and click **Run**.
+   - *Note*: Grant the required permissions when prompted (**Review Permissions** ➔ choose your Google account ➔ **Advanced** ➔ **Go to ... (unsafe)** ➔ **Allow**).
+   - This automatically creates all 8 database sheets (*Akun, GuruMapel, Mapel, Kelas, Siswa, Nilai, Surat, AuditLog*) along with the default Super Admin account:
+     - **Username**: `admin`
+     - **Password**: `admin123` *(change this immediately after logging in!)*
+5. Click **Deploy** in the top-right corner ➔ **New deployment**.
+6. Click the gear icon next to *Select type* ➔ choose **Web app**:
+   - **Description**: `Portal Hasil Penilaian API v3`
+   - **Execute as**: `Me`
+   - **Who has access**: `Anyone`
+7. Click **Deploy** and copy the generated **Web App URL (`https://script.google.com/macros/s/.../exec`)**.
 
 </details>
 
 <details>
-<summary><strong>💻 Option B: Run Locally on Your Computer</strong></summary>
+<summary><strong>Step 2: Connect Frontend & Host for Free</strong></summary>
 
-1. Open the project folder in **Visual Studio Code**.
-2. Install the **Live Server** extension (or run `npx serve .` in your terminal).
-3. Right-click **`index.html`** and select **Open with Live Server**.
-4. Open `http://127.0.0.1:5500` in your browser.
+1. Ensure your project directory matches the following structure:
+   ```text
+   portal-penilaian/
+   ├── index.html
+   ├── css/
+   │   └── style.css
+   └── js/
+       ├── config.js
+       ├── theme-audio.js
+       ├── api.js
+       ├── ui-components.js
+       ├── guest.js
+       ├── security.js
+       ├── excel-letter.js
+       └── admin.js
+   ```
+2. Open **`js/config.js`** and paste your Web App URL from Step 1 into `API_URL`:
+   ```javascript
+   const APP_CONFIG = {
+     API_URL: '[https://script.google.com/macros/s/PASTE_YOUR_WEB_APP_URL_HERE/exec](https://script.google.com/macros/s/PASTE_YOUR_WEB_APP_URL_HERE/exec)',
+     KKM: 75,
+     LEADERBOARD_INTERVAL_MS: 30000,
+     IDLE_WARN_1_MS: 180000,
+     IDLE_WARN_2_MS: 300000,
+     IDLE_WARN_3_MS: 420000,
+     IDLE_LOGOUT_MS: 480000
+   };
+   ```
+3. **Free Hosting Options**:
+   - **GitHub Pages**: Push the project folder to a GitHub repository ➔ go to **Settings** ➔ **Pages** ➔ select `main` branch and `/ (root)` folder ➔ click **Save**.
+   - **Netlify / Vercel**: Drag and drop the `portal-penilaian` folder onto [Netlify Drop](https://app.netlify.com/drop) or import the repository into [Vercel](https://vercel.com).
+   - **Local Execution**: Open `index.html` directly in any modern web browser.
+
+</details>
+
+<details>
+<summary><strong>Step 3: User Manual (Super Admin, Teachers, & Students)</strong></summary>
+
+- **For the First Admin (Super Admin)**:
+  1. Click **Login Admin** at the top right, log in with `admin` / `admin123`, and update your password under **Master Akun**.
+  2. Populate master records in order: **Master Guru Mapel** (optional) ➔ **Master Mapel / Ujian** (configure subjects and select the result card layout) ➔ **Master Kelas** ➔ **Master Siswa** ➔ **Master Akun** (create accounts for subject teachers).
+- **For Subject Teachers**:
+  1. Log in using the credentials issued by the Super Admin.
+  2. On the initial prompt, check the classes you teach and click **Simpan Kelas Ampuan**.
+  3. Open **Master Input Nilai**, click **+ Input Nilai** (search by Student ID or Name; your subject is locked automatically), or use **Download Template Excel** ➔ fill/edit grades in Excel ➔ **Upload Excel Nilai**.
+- **For Students**:
+  1. Visit the public portal without logging in.
+  2. Type your complete **Student ID (NIS)** or **Full Name** in the search box and click **Cari Nilai**.
+  3. Switch between **Subject / Exam** tabs to view your grade breakdown or copy the pre-filled WhatsApp remedial message if needed.
 
 </details>
 
 ---
 
-### Step 4: How to Use the Portal
+<div id="en-4-why-is-this-open-source"></div>
 
-1. **First Super Admin Login:**
-   - Click **Login Admin** in the top navigation bar.
-   - Sign in with the default credentials:
-     - **Username:** `admin`
-     - **Password:** `admin123`
-   - *Immediately change the default password inside **Master Akun** to secure your installation.*
-2. **Recommended Setup Sequence for Super Admin:**
-   - **Master Guru Mapel:** Register subject teachers.
-   - **Master Mapel / Ujian:** Create subjects or exams, assign teachers (optional), set passing scores (KKM), and choose the **Result Card Layout** (*Default*, *Final Score Only*, *TKA*, or *Custom*).
-   - **Master Kelas:** Add school classes (e.g., `VII-A`, `VIII-B`, `XI-1`).
-   - **Master Siswa:** Add student records (`NIS`, `Full Name`, `Class`, and optional `Group`).
-   - **Master Akun:** Create login accounts for subject teachers linked to their respective subjects.
-3. **Entering Grades as a Subject Teacher:**
-   - Log in with your teacher account and select your assigned classes on the initial prompt.
-   - Enter grades individually via **+ Input Nilai** (with instant student search), or click **Download Template Excel**, edit scores in Excel, and upload via **Upload Excel Nilai**.
-4. **Checking Grades as a Student:**
-   - Visit the main portal page, type your complete **Student ID (NIS)** or **Full Name**, click **Cari Nilai**, choose a subject, and view or print your result card.
+## 4. 🌍 Why Is This Open-Source?
+
+**Portal Hasil Penilaian** is released as free and **open-source software** under the **MIT License** based on the principle that reliable educational technology should be accessible to every school and teacher without financial barriers:
+
+1. **Equal Digital Access for Schools**: Not every school has the budget for expensive proprietary software. By combining open-source code with free Google Sheets infrastructure, any school can deploy it immediately at zero cost.
+2. **Full Data Transparency & Security**: School IT administrators and developers can inspect every line of code to verify how student data is handled, ensuring complete privacy and trust.
+3. **Freedom to Customize**: Every institution has unique grading rules (custom KKM thresholds, TKA aptitude assessments, practical exams, or project rubrics). Open-source access empowers schools to tailor the platform to their exact curriculum.
+4. **Community Collaboration**: Fellow developers, ICT teachers, and ed-tech enthusiasts are welcome to contribute enhancements and share improvements openly.
 
 ---
 
-## 🌍 4. Why Is This Project Open-Source?
+<div id="en-5-support--donation"></div>
 
-**Portal Hasil Penilaian** is released as **Open-Source Software** under the **MIT License** to ensure essential educational infrastructure remains accessible, auditable, and adaptable for every school:
+## 5. ❤️ Support & Donation (Keep This Project Free)
 
-1. **Democratizing Educational Technology:** Many schools lack recurring IT budgets for commercial grading platforms. By leveraging free static hosting and Google Sheets, any school can deploy a fast, transparent assessment portal at zero cost.
-2. **Full Data Privacy & Code Transparency:** Because 100% of the frontend and Google Apps Script backend source code is open for inspection, school IT administrators can verify that all student records remain exclusively inside the **school's own Google Drive**, with zero third-party data harvesting.
-3. **Adaptable to Any Curriculum:** Every institution—from elementary and high schools to vocational academies and tutoring centers—uses distinct assessment components. Modular code makes it effortless to customize grading formulas, card templates, and branding.
-4. **Community-Driven Improvement:** Educators, students, and developers worldwide are welcome to contribute improvements, report issues, and build new features together.
-
----
-
-## ❤️ 5. Support This Free Project (Donation)
-
-This project is independently developed and maintained so that it remains **100% free, ad-free, and open to all schools**. If this portal saves time for your teachers or helps your institution improve academic transparency, please consider making a voluntary contribution to support ongoing feature development, documentation, and future open-source educational tools.
+This software is independently built and maintained so that it remains **100% free** for teachers, students, and schools everywhere. If this portal saves you time and you would like to support ongoing maintenance and new open-source educational tools, voluntary contributions are warmly appreciated via the channels below:
 
 <table>
   <tr>
-    <th width="52%" align="center">🏦 Bank Transfer & E-Wallet</th>
-    <th width="48%" align="center">📱 Scan QR Code (QRIS)</th>
-  </tr>
-  <tr>
-    <td valign="top">
-      <p><strong>Direct Transfer Details:</strong></p>
-      <ul>
-        <li><strong>Bank BCA:</strong> <code>0000-0000-00</code><br/><sub>Account Name: Account Holder Name</sub></li>
-        <li><strong>Bank BRI / Mandiri:</strong> <code>0000-0000-0000-000</code><br/><sub>Account Name: Account Holder Name</sub></li>
-        <li><strong>DANA / GoPay / OVO / ShopeePay:</strong> <code>+62 812-0000-0000</code><br/><sub>Account Name: Account Holder Name</sub></li>
-      </ul>
-      <p><em>Note for Repository Maintainer: Replace the placeholder account numbers above with your official details before publishing.</em></p>
+    <td align="center" width="260">
+      <strong>📱 Scan QR Code (BRI Account)</strong><br/><br/>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=427401025594536&margin=10" width="190" height="190" alt="QR Code BRI Account 427401025594536" /><br/>
+      <sub>QR Code for Bank BRI Account:<br/><code>427401025594536</code></sub>
     </td>
-    <td align="center" valign="middle">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/username/portal-hasil-penilaian" alt="Donation QR Code" width="190" height="190" />
-      <br/>
-      <sub><strong>Scan using any Mobile Banking or E-Wallet app</strong><br/>(Replace the <code>src</code> attribute above with your <code>assets/qris.png</code> image)</sub>
+    <td valign="top">
+      <h3>💳 Bank Transfer & E-Wallet</h3>
+      <p>Every contribution goes directly toward research, documentation, and building more free open-source tools for educators.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Payment Method</th>
+            <th>Account / Phone Number</th>
+            <th>Account Holder</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>🏦 Bank BRI</strong></td>
+            <td><code>427401025594536</code></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+          </tr>
+          <tr>
+            <td><strong>🧡 ShopeePay</strong></td>
+            <td><code>081807982673</code></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><em>Thank you for your generosity and support in advancing open-source educational technology! 🙏</em></p>
     </td>
   </tr>
 </table>
 
-> **Non-Monetary Support:** You can also support this project for free by giving this repository a **⭐ Star**, sharing it with fellow educators and school administrators, or submitting a **Pull Request**.
+---
+
+<div id="en-6-about-the-creator"></div>
+
+## 6. 👨‍💻 About the Creator
+
+<table>
+  <tr>
+    <td>
+      <h3>Ilham Muhammad Furqon, S.Kom.</h3>
+      <p><strong>Software Developer & Educational Technology Advocate</strong></p>
+      <p>
+        <strong>Ilham Muhammad Furqon, S.Kom.</strong> holds a Bachelor of Computer Science (S.Kom.) degree and specializes in crafting lightweight, secure, and practical information systems for schools and educators. Through <strong>Portal Hasil Penilaian</strong>, he aims to bridge academic transparency between teachers and students without requiring costly server infrastructure.
+      </p>
+    </td>
+  </tr>
+</table>
 
 ---
 
 <div align="center">
-  <sub>Dibuat dengan ❤️ untuk kemajuan transparansi pendidikan • Built with ❤️ for educational transparency</sub>
+  <sub>© 2026 <strong>Ilham Muhammad Furqon, S.Kom.</strong> — Released under the MIT Open-Source License.</sub>
 </div>
