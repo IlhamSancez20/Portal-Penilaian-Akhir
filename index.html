@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Hasil Penilaian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js" defer></script>
+</head>
+<body>
+  <div class="art-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand" id="brandHome" role="button" tabindex="0">
+        <span class="brand-badge">PHP</span>
+        <div>
+          <h1>Portal Hasil Penilaian</h1>
+          <small id="realtimeClockLabel">Memuat waktu...</small>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button id="btnToggleTheme" class="btn btn-ghost" title="Mode Terang/Gelap Otomatis sesuai waktu">
+          <span id="themeIcon">☀️</span> <span id="themeText">Auto</span>
+        </button>
+        <button id="btnOpenLogin" class="btn btn-primary">Login Admin</button>
+        <button id="btnAdminLogout" class="btn btn-danger hidden">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="guestView" class="container main-content">
+    <section class="hero-search card-glass animate-fade">
+      <span class="pill-info">Transparansi Akademik • Kelas VII, VIII, & XI</span>
+      <h2>Portal Hasil Penilaian</h2>
+      <p class="subtitle">Ketik <strong>NIS</strong> atau <strong>Nama Lengkap</strong> secara utuh, lalu pilih <strong>Mata Pelajaran / Ujian</strong> untuk menampilkan kartu hasil penilaian.</p>
+
+      <form id="studentSearchForm" class="search-box" autocomplete="off">
+        <input
+          type="text"
+          id="studentQueryInput"
+          placeholder="Ketik NIS atau Nama Lengkap secara utuh..."
+          required
+        />
+        <button type="submit" id="btnSearchStudent" class="btn btn-primary">
+          Cari Nilai
+        </button>
+      </form>
+      <small class="hint-text">* Wajib mengetik NIS atau Nama Lengkap secara lengkap sesuai daftar peserta ujian.</small>
+    </section>
+
+    <section id="searchResultSection" class="hidden animate-pop"></section>
+
+    <section class="leaderboard-section card-glass animate-fade">
+      <div class="lb-header">
+        <div>
+          <span class="pill-accent">Peringkat Apresiasi</span>
+          <h3 id="lbCategoryTitle">Nilai Terbaik Pembuatan Slide — Per Kelompok</h3>
+          <p id="lbCategoryDesc" class="muted">Rata-rata Nilai 1 & Nilai 2 tertinggi</p>
+        </div>
+
+        <div class="lb-controls">
+          <select id="lbSubjectFilter" class="input-select" aria-label="Filter Mata Pelajaran">
+            <option value="ALL">Semua Mata Pelajaran</option>
+          </select>
+          <select id="lbClassFilter" class="input-select" aria-label="Filter Kelas">
+            <option value="ALL">Semua Kelas (VII, VIII, XI)</option>
+          </select>
+          <button id="btnToggleAutoSlide" class="btn btn-ghost btn-sm" title="Jeda/Lanjut Rotasi 30 Detik">
+            ⏸️ 30s Auto
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div id="lbProgressBar" class="progress-fill"></div>
+      </div>
+
+      <div class="lb-tabs" id="lbCategoryTabs">
+        <button class="tab-chip active" data-cat="slide_group">1. Slide (Kelompok)</button>
+        <button class="tab-chip" data-cat="pres_group">2. Presentasi (Kelompok)</button>
+        <button class="tab-chip" data-cat="total_group">3. Total Akhir (Kelompok)</button>
+        <button class="tab-chip" data-cat="slide_indiv">4. Slide (Siswa)</button>
+        <button class="tab-chip" data-cat="pres_indiv">5. Presentasi (Siswa)</button>
+        <button class="tab-chip" data-cat="total_indiv">6. Total Akhir (Siswa)</button>
+      </div>
+
+      <div id="lbListContainer" class="lb-grid">
+        <div class="skeleton-box">Memuat papan peringkat terbaik...</div>
+      </div>
+    </section>
+  </main>
+
+  <main id="adminView" class="container main-content hidden">
+    <div class="admin-topbar card-glass">
+      <div>
+        <h2 id="adminPanelHeading">Dashboard Administrator</h2>
+        <p class="muted" id="adminWelcomeText">Memuat profil...</p>
+      </div>
+      <div class="admin-nav-tabs" id="adminNavTabs">
+        <button class="admin-tab active" data-tab="dashboard">📊 Dashboard</button>
+        <button class="admin-tab" data-tab="nilai">📝 Master Input Nilai</button>
+        <button class="admin-tab teacher-only" data-tab="surat-kirim">✉️ Surat Koreksi ke Admin Utama</button>
+        <button class="admin-tab super-only" data-tab="guru">👨‍🏫 Master Guru Mapel</button>
+        <button class="admin-tab super-only" data-tab="mapel">📚 Master Mapel / Ujian</button>
+        <button class="admin-tab super-only" data-tab="kelas">🏫 Master Kelas</button>
+        <button class="admin-tab super-only" data-tab="siswa">🎓 Master Siswa</button>
+        <button class="admin-tab super-only" data-tab="akun">🔐 Master Akun</button>
+        <button class="admin-tab super-only" data-tab="surat-masuk">📥 Kotak Surat</button>
+        <button class="admin-tab super-only" data-tab="audit">🛡️ Log Keamanan</button>
+      </div>
+    </div>
+
+    <section id="tab-dashboard" class="admin-panel-section">
+      <div class="kpi-grid" id="kpiCards"></div>
+      <div class="card-glass chart-card">
+        <h3>Statistik Ketuntasan Siswa (Aman ≥ 75 vs Remedial &lt; 75)</h3>
+        <div class="chart-wrapper">
+          <canvas id="remedialBarChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-nilai" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Input Nilai</h3>
+          <p class="muted">Unduh template Excel sesuai kelas yang diampu, isi atau edit nilai secara bebas di Excel, lalu unggah kembali hasilnya.</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-ghost" onclick="ExcelLetterManager.downloadTemplate()">📥 Download Template Excel</button>
+          <label class="btn btn-ghost" style="cursor:pointer;">
+            📤 Upload Excel Nilai
+            <input type="file" id="excelUploadInput" accept=".xlsx,.xls" class="hidden" />
+          </label>
+          <button class="btn btn-primary" onclick="AdminApp.openFormModal('nilai')">+ Input Nilai</button>
+          <button class="btn btn-danger" onclick="AdminApp.confirmDeleteAll('nilai')">Hapus Semua</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-nilai"></table>
+      </div>
+    </section>
+
+    <section id="tab-surat-kirim" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Buat Surat Permohonan Koreksi Data Siswa (ke Admin Utama)</h3>
+          <p class="muted">Pilih satu siswa, centang beberapa siswa, atau pilih semua siswa pada kelas ampuan jika ada kesalahan NIS atau Nama.</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-ghost btn-sm" onclick="ExcelLetterManager.toggleSelectAllStudents(true)">Pilih Semua</button>
+          <button class="btn btn-ghost btn-sm" onclick="ExcelLetterManager.toggleSelectAllStudents(false)">Batal Pilih</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Filter Kelas Ampuan</label>
+        <select id="letterClassSelect" class="input-select" onchange="ExcelLetterManager.renderLetterStudentList()"></select>
+      </div>
+
+      <div class="table-responsive" style="max-height:280px; overflow-y:auto; margin-bottom:14px;">
+        <table class="data-table" id="table-letter-students"></table>
+      </div>
+
+      <div class="form-group">
+        <label for="letterReasonInput">Rincian Kesalahan NIS / Nama & Permohonan Perbaikan</label>
+        <textarea id="letterReasonInput" rows="3" placeholder="Tuliskan penjelasan kesalahan penulisan NIS atau Nama..." style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit;"></textarea>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="ExcelLetterManager.submitCorrectionLetter()">✉️ Kirim Surat ke Admin Utama</button>
+        <button class="btn btn-ghost" onclick="ExcelLetterManager.printDraftLetter()">🖨️ Cetak / Simpan PDF Surat</button>
+      </div>
+
+      <hr style="margin:22px 0; border-color:var(--border);" />
+      <h4>Riwayat Surat Terkirim</h4>
+      <div class="table-responsive">
+        <table class="data-table" id="table-surat-sent"></table>
+      </div>
+    </section>
+
+    <section id="tab-guru" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Guru Mata Pelajaran</h3>
+          <p class="muted">Referensi nama guru yang dapat dipilih/dicari saat menambahkan Master Kelas & Master Mata Pelajaran.</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="AdminApp.openFormModal('guru')">+ Tambah Guru Mapel</button>
+          <button class="btn btn-danger" onclick="AdminApp.confirmDeleteAll('guru')">Hapus Semua</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-guru"></table>
+      </div>
+    </section>
+
+    <section id="tab-mapel" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Mata Pelajaran / Ujian Lain</h3>
+          <p class="muted">Atur nama mapel/ujian (pilih atau ketik sendiri), guru pengampu (opsional), serta bentuk kartu hasil siswa (Default, Nilai Akhir, TKA, atau Kustom).</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="AdminApp.openFormModal('mapel')">+ Tambah Mapel / Ujian</button>
+          <button class="btn btn-danger" onclick="AdminApp.confirmDeleteAll('mapel')">Hapus Semua</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-mapel"></table>
+      </div>
+    </section>
+
+    <section id="tab-kelas" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Kelas (VII, VIII, XI)</h3>
+          <p class="muted">Pilih/cari Guru Mata Pelajaran dari daftar yang tersedia (boleh dikosongkan jika belum ada).</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="AdminApp.openFormModal('kelas')">+ Tambah Kelas</button>
+          <button class="btn btn-danger" onclick="AdminApp.confirmDeleteAll('kelas')">Hapus Semua</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-kelas"></table>
+      </div>
+    </section>
+
+    <section id="tab-siswa" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Siswa (Khusus Admin Utama)</h3>
+          <p class="muted">Kolom Kelompok bersifat opsional (kosongkan jika tugas individual).</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="AdminApp.openFormModal('siswa')">+ Tambah Siswa</button>
+          <button class="btn btn-danger" onclick="AdminApp.confirmDeleteAll('siswa')">Hapus Semua</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-siswa"></table>
+      </div>
+    </section>
+
+    <section id="tab-akun" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Master Akun Administrator & Guru Mapel</h3>
+          <p class="muted">Password tidak ditampilkan pada tabel demi keamanan (terenkripsi satu arah di server).</p>
+        </div>
+        <button class="btn btn-primary" onclick="AdminApp.openFormModal('akun')">+ Tambah Akun</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-akun"></table>
+      </div>
+    </section>
+
+    <section id="tab-surat-masuk" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Kotak Masuk Surat Koreksi Data Siswa</h3>
+          <p class="muted">Permohonan perbaikan NIS / Nama siswa dari Guru Mata Pelajaran.</p>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-surat-inbox"></table>
+      </div>
+    </section>
+
+    <section id="tab-audit" class="admin-panel-section hidden card-glass">
+      <div class="section-header-row">
+        <div>
+          <h3>Log Audit & Keamanan Sistem</h3>
+          <p class="muted">Rekam jejak aktivitas login, perubahan data, unggah Excel, dan perlindungan akses.</p>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="table-audit"></table>
+      </div>
+    </section>
+  </main>
+
+  <div id="loginModal" class="modal-backdrop hidden">
+    <div class="modal-card card-glass animate-pop">
+      <div class="modal-header">
+        <h3>Login Administrator</h3>
+        <button class="btn-close" id="btnCloseLogin">&times;</button>
+      </div>
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" required placeholder="Masukkan username" />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="loginPassword" required placeholder="Masukkan password" />
+            <button type="button" class="toggle-pass-btn" data-target="loginPassword" aria-label="Tampilkan/Sembunyikan Password">👁️</button>
+          </div>
+        </div>
+        <p id="loginErrorMsg" class="error-text hidden"></p>
+        <button type="submit" class="btn btn-primary w-full" id="btnSubmitLogin">Masuk Portal</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="assignClassModal" class="modal-backdrop hidden">
+    <div class="modal-card card-glass animate-pop">
+      <div class="modal-header">
+        <h3>Pilih Kelas yang Diampu</h3>
+      </div>
+      <p class="muted" style="margin-bottom:14px;">
+        Silakan pilih kelas yang Anda ampu. Anda hanya dapat mengelola nilai pada kelas yang dipilih. Pesan ini tidak akan muncul lagi setelah disimpan.
+      </p>
+      <form id="assignClassForm">
+        <div id="assignClassCheckboxes" class="checkbox-grid"></div>
+        <p id="assignClassError" class="error-text hidden"></p>
+        <button type="submit" class="btn btn-primary w-full" style="margin-top:14px;">Simpan Kelas Ampuan</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="crudModal" class="modal-backdrop hidden">
+    <div class="modal-card card-glass animate-pop">
+      <div class="modal-header">
+        <h3 id="crudModalTitle">Form Data</h3>
+        <button class="btn-close" onclick="AdminApp.closeCrudModal()">&times;</button>
+      </div>
+      <form id="crudForm"></form>
+    </div>
+  </div>
+
+  <div id="confirmActionModal" class="modal-backdrop hidden" style="z-index:75;">
+    <div class="modal-card card-glass confirm-card animate-pop">
+      <span id="confirmBadge" class="badge-warn">KONFIRMASI & PERINGATAN</span>
+      <h3 id="confirmTitle" style="margin-bottom:8px;">Konfirmasi Tindakan</h3>
+      <p id="confirmMessage" class="muted" style="margin-bottom:12px;"></p>
+      <div id="confirmDetails" class="confirm-detail-box"></div>
+      <div class="btn-group" style="justify-content:flex-end; margin-top:18px;">
+        <button type="button" id="btnConfirmCancel" class="btn btn-ghost">Batal</button>
+        <button type="button" id="btnConfirmProceed" class="btn btn-primary">Ya, Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="idleWarningModal" class="modal-backdrop hidden" style="z-index:85;">
+    <div class="modal-card card-glass warning-card animate-pop">
+      <span id="idleWarningBadge" class="badge-warn">PERINGATAN 1 / 3</span>
+      <h3 id="idleWarningTitle">Tidak Ada Aktivitas Terdeteksi</h3>
+      <p id="idleWarningDesc">Sesi Anda akan otomatis keluar demi keamanan data jika tidak ada interaksi.</p>
+      <button id="btnStayActive" class="btn btn-primary w-full">Saya Masih Aktif (Lanjutkan Sesi)</button>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/theme-audio.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui-components.js"></script>
+  <script src="js/guest.js"></script>
+  <script src="js/security.js"></script>
+  <script src="js/excel-letter.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
