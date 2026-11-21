@@ -242,12 +242,12 @@ Aplikasi ini dikembangkan dan dipelihara secara mandiri agar tetap **100% gratis
           <tr>
             <td><strong>🏦 Bank BRI</strong></td>
             <td><code>427401025594536</code></td>
-            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+            <td><strong>Ilham Muhammad Furqon</strong></td>
           </tr>
           <tr>
             <td><strong>🧡 ShopeePay</strong></td>
             <td><code>081807982673</code></td>
-            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+            <td><strong>Ilham Muhammad Furqon</strong></td>
           </tr>
         </tbody>
       </table>
@@ -494,12 +494,12 @@ This software is independently built and maintained so that it remains **100% fr
           <tr>
             <td><strong>🏦 Bank BRI</strong></td>
             <td><code>427401025594536</code></td>
-            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+            <td><strong>Ilham Muhammad Furqon</strong></td>
           </tr>
           <tr>
             <td><strong>🧡 ShopeePay</strong></td>
             <td><code>081807982673</code></td>
-            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
+            <td><strong>Ilham Muhammad Furqon</strong></td>
           </tr>
         </tbody>
       </table>
