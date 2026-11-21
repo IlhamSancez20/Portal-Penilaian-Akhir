@@ -1,6 +1,10 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2563eb,50:4f46e5,100:7c3aed&height=210&section=header&text=Portal%20Hasil%20Penilaian&fontSize=42&fontColor=ffffff&fontAlignY=38&desc=Sistem%20Transparansi%20Nilai%20Akademik%20Modern%20•%20Gratis%20%26%20Open-Source&descSize=16&descAlignY=60" width="100%" alt="Portal Hasil Penilaian Banner" />
+<!-- HERO HEADER & LOGO -->
+<img src="Logo.png" width="145" alt="Logo Portal Hasil Penilaian" />
+
+<h1>Portal Hasil Penilaian</h1>
+<p><strong>Sistem Transparansi Nilai Akademik Modern • Gratis & Open-Source</strong></p>
 
 <p>
   <a href="#-bahasa-indonesia-utama"><kbd>🇮🇩 BAHASA INDONESIA (UTAMA)</kbd></a>
@@ -150,6 +154,8 @@ Ikuti panduan langkah demi langkah di bawah ini untuk memasang aplikasi dari awa
    ```text
    portal-penilaian/
    ├── index.html
+   ├── Logo.png
+   ├── README.md
    ├── css/
    │   └── style.css
    └── js/
@@ -241,12 +247,12 @@ Aplikasi ini dikembangkan dan dipelihara secara mandiri agar tetap **100% gratis
           <tr>
             <td><strong>🏦 Bank BRI</strong></td>
             <td><code>427401025594536</code></td>
-            <td><strong>Ilham Muhammad Furqon</strong></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
           </tr>
           <tr>
             <td><strong>🧡 ShopeePay</strong></td>
             <td><code>081807982673</code></td>
-            <td><strong>Ilham Muhammad Furqon</strong></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
           </tr>
         </tbody>
       </table>
@@ -402,6 +408,8 @@ Follow the step-by-step instructions below to set up and deploy the portal from 
    ```text
    portal-penilaian/
    ├── index.html
+   ├── Logo.png
+   ├── README.md
    ├── css/
    │   └── style.css
    └── js/
@@ -493,12 +501,12 @@ This software is independently built and maintained so that it remains **100% fr
           <tr>
             <td><strong>🏦 Bank BRI</strong></td>
             <td><code>427401025594536</code></td>
-            <td><strong>Ilham Muhammad Furqon</strong></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
           </tr>
           <tr>
             <td><strong>🧡 ShopeePay</strong></td>
             <td><code>081807982673</code></td>
-            <td><strong>Ilham Muhammad Furqon</strong></td>
+            <td><strong>Ilham Muhammad Furqon, S.Kom.</strong></td>
           </tr>
         </tbody>
       </table>
