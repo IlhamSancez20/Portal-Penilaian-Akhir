@@ -1,6 +1,5 @@
 <div align="center">
 
-<!-- HERO HEADER & INTERACTIVE LANGUAGE SWITCHER -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2563eb,50:4f46e5,100:7c3aed&height=210&section=header&text=Portal%20Hasil%20Penilaian&fontSize=42&fontColor=ffffff&fontAlignY=38&desc=Sistem%20Transparansi%20Nilai%20Akademik%20Modern%20•%20Gratis%20%26%20Open-Source&descSize=16&descAlignY=60" width="100%" alt="Portal Hasil Penilaian Banner" />
 
 <p>
