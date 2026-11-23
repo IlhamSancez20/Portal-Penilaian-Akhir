@@ -31,6 +31,7 @@ const AdminApp = (() => {
         document.getElementById(`tab-${target}`).classList.remove('hidden');
 
         if (target === 'surat-kirim') ExcelLetterManager.initLetterTab();
+        if (target === 'nilai') ExcelLetterManager.populateExcelFilters();
       });
     });
 
@@ -79,6 +80,25 @@ const AdminApp = (() => {
     });
   }
 
+  function populateTableClassFilters() {
+    const classes = [...new Set((state.siswa || []).map(s => String(s.kelas).trim()).filter(Boolean))].sort();
+    const opts = `<option value="ALL">Semua Kelas</option>` +
+      classes.map(c => `<option value="${GuestApp.escapeHtml(c)}">Kelas ${GuestApp.escapeHtml(c)}</option>`).join('');
+
+    const nSel = document.getElementById('nilaiTableClassFilter');
+    const sSel = document.getElementById('siswaTableClassFilter');
+    if (nSel) {
+      const prev = nSel.value;
+      nSel.innerHTML = opts;
+      if (classes.includes(prev)) nSel.value = prev;
+    }
+    if (sSel) {
+      const prev = sSel.value;
+      sSel.innerHTML = opts;
+      if (classes.includes(prev)) sSel.value = prev;
+    }
+  }
+
   async function loadDashboard() {
     const res = await ApiClient.adminRequest({ action: 'admin_dashboard' });
     if (!res || !res.success) return;
@@ -89,8 +109,10 @@ const AdminApp = (() => {
     document.querySelectorAll('.super-only').forEach(el => el.classList.toggle('hidden', !isSuperAdmin));
     document.querySelectorAll('.teacher-only').forEach(el => el.classList.toggle('hidden', isSuperAdmin));
 
+    populateTableClassFilters();
     renderStatsAndChart();
     renderTables();
+    ExcelLetterManager.populateExcelFilters();
     if (!isSuperAdmin) ExcelLetterManager.initLetterTab();
   }
 
@@ -146,25 +168,40 @@ const AdminApp = (() => {
     const siswaMap = {};
     state.siswa.forEach(s => { siswaMap[String(s.nis).trim()] = s; });
 
+    const nSearch = (document.getElementById('nilaiSearchInput')?.value || '').trim().toLowerCase();
+    const nClass = document.getElementById('nilaiTableClassFilter')?.value || 'ALL';
+    const nStatus = document.getElementById('nilaiStatusFilter')?.value || 'ALL';
+
+    const filteredNilai = state.nilai.filter(n => {
+      const s = siswaMap[String(n.nis).trim()] || {};
+      const matchQuery = !nSearch ||
+        String(n.nis).toLowerCase().includes(nSearch) ||
+        String(s.nama || '').toLowerCase().includes(nSearch);
+      const matchClass = nClass === 'ALL' || String(s.kelas || '') === nClass;
+      const matchStatus = nStatus === 'ALL' || String(n.status || '') === nStatus;
+      return matchQuery && matchClass && matchStatus;
+    });
+
     document.getElementById('table-nilai').innerHTML = `
       <thead><tr><th>NIS</th><th>Nama Siswa</th><th>Kelas</th><th>Mapel</th><th>N1</th><th>N2</th><th>N3</th><th>+Tmb</th><th>Akhir</th><th>Status</th><th>Aksi</th></tr></thead>
       <tbody>
-        ${state.nilai.map(n => {
+        ${filteredNilai.length === 0 ? `<tr><td colspan="11" class="muted" style="text-align:center;">Tidak ada data nilai yang sesuai filter.</td></tr>` : ''}
+        ${filteredNilai.map(n => {
           const s = siswaMap[String(n.nis).trim()] || {};
           return `<tr>
             <td>${esc(n.nis)}</td>
             <td>${esc(s.nama || '-')}</td>
             <td>${esc(s.kelas || '-')}</td>
             <td>${esc(n.mata_pelajaran)}</td>
-            <td>${esc(n.nilai_1 || '-')}</td>
-            <td>${esc(n.nilai_2 || '-')}</td>
-            <td>${esc(n.nilai_3 || '-')}</td>
+            <td>${esc(n.nilai_1 !== '' ? n.nilai_1 : '-')}</td>
+            <td>${esc(n.nilai_2 !== '' ? n.nilai_2 : '-')}</td>
+            <td>${esc(n.nilai_3 !== '' ? n.nilai_3 : '-')}</td>
             <td>${esc(n.nilai_tambah || 0)}</td>
-            <td><strong>${esc(n.nilai_akhir || '-')}</strong></td>
+            <td><strong>${esc(n.nilai_akhir !== '' ? n.nilai_akhir : '-')}</strong></td>
             <td>${esc(n.status)}</td>
             <td>
-              <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("nilai", ${JSON.stringify(n)})'>Edit</button>
-              <button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("nilai", "${esc(n.id_nilai)}", "${esc(s.nama || n.nis)}")'>Hapus</button>
+              <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('nilai', '${esc(n.id_nilai)}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('nilai', '${esc(n.id_nilai)}', '${esc(s.nama || n.nis)}')">Hapus</button>
             </td>
           </tr>`;
         }).join('')}
@@ -173,7 +210,7 @@ const AdminApp = (() => {
     if (!isSuperAdmin) return;
 
     document.getElementById('table-guru').innerHTML = `
-      <thead><tr><th>ID</th><th>NIP / Kode</th><th>Nama Guru Mapel</th><th>Bidang Studi</th><th>Kontak</th><th>Aksi</th></tr></thead>
+      <thead><tr><th>ID</th><th>NIP / Kode</th><th>Nama Guru Mapel</th><th>Bidang Studi</th><th>Kontak WA</th><th>Aksi</th></tr></thead>
       <tbody>
         ${(state.guru || []).map(g => `<tr>
           <td>${esc(g.id)}</td>
@@ -182,8 +219,8 @@ const AdminApp = (() => {
           <td>${esc(g.bidang_studi || '-')}</td>
           <td>${esc(g.no_hp || '-')}</td>
           <td>
-            <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("guru", ${JSON.stringify(g)})'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("guru", "${esc(g.id)}", "${esc(g.nama_guru)}")'>Hapus</button>
+            <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('guru', '${esc(g.id)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('guru', '${esc(g.id)}', '${esc(g.nama_guru)}')">Hapus</button>
           </td>
         </tr>`).join('')}
       </tbody>`;
@@ -205,8 +242,8 @@ const AdminApp = (() => {
           <td>${esc(m.kkm)}</td>
           <td>${esc(cardLabels[m.tipe_card] || 'Default')}</td>
           <td>
-            <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("mapel", ${JSON.stringify(m)})'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("mapel", "${esc(m.id)}", "${esc(m.nama_mapel)}")'>Hapus</button>
+            <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('mapel', '${esc(m.id)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('mapel', '${esc(m.id)}', '${esc(m.nama_mapel)}')">Hapus</button>
           </td>
         </tr>`).join('')}
       </tbody>`;
@@ -221,23 +258,35 @@ const AdminApp = (() => {
           <td>${esc(k.guru_mapel || '(Kosong)')}</td>
           <td>${esc(k.mata_pelajaran || '-')}</td>
           <td>
-            <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("kelas", ${JSON.stringify(k)})'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("kelas", "${esc(k.id)}", "${esc(k.nama_kelas)}")'>Hapus</button>
+            <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('kelas', '${esc(k.id)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('kelas', '${esc(k.id)}', '${esc(k.nama_kelas)}')">Hapus</button>
           </td>
         </tr>`).join('')}
       </tbody>`;
 
+    const sSearch = (document.getElementById('siswaSearchInput')?.value || '').trim().toLowerCase();
+    const sClass = document.getElementById('siswaTableClassFilter')?.value || 'ALL';
+
+    const filteredSiswa = state.siswa.filter(s => {
+      const matchQuery = !sSearch ||
+        String(s.nis).toLowerCase().includes(sSearch) ||
+        String(s.nama).toLowerCase().includes(sSearch);
+      const matchClass = sClass === 'ALL' || String(s.kelas) === sClass;
+      return matchQuery && matchClass;
+    });
+
     document.getElementById('table-siswa').innerHTML = `
       <thead><tr><th>NIS</th><th>Nama Lengkap</th><th>Kelas</th><th>Kelompok</th><th>Aksi</th></tr></thead>
       <tbody>
-        ${state.siswa.map(s => `<tr>
+        ${filteredSiswa.length === 0 ? `<tr><td colspan="5" class="muted" style="text-align:center;">Tidak ada data siswa yang sesuai filter.</td></tr>` : ''}
+        ${filteredSiswa.map(s => `<tr>
           <td>${esc(s.nis)}</td>
           <td>${esc(s.nama)}</td>
           <td>${esc(s.kelas)}</td>
           <td>${esc(s.kelompok || '(Individual)')}</td>
           <td>
-            <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("siswa", ${JSON.stringify(s)})'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("siswa", "${esc(s.nis)}", "${esc(s.nama)}")'>Hapus</button>
+            <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('siswa', '${esc(s.nis)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('siswa', '${esc(s.nis)}', '${esc(s.nama)}')">Hapus</button>
           </td>
         </tr>`).join('')}
       </tbody>`;
@@ -254,8 +303,8 @@ const AdminApp = (() => {
           <td>${esc(a.role)}</td>
           <td>${esc(a.kelas_diampu || 'Belum Memilih')}</td>
           <td>
-            <button class="btn btn-ghost btn-sm" onclick='AdminApp.openFormModal("akun", ${JSON.stringify(a)})'>Edit</button>
-            ${a.id !== 'ADM-001' ? `<button class="btn btn-danger btn-sm" onclick='AdminApp.deleteOne("akun", "${esc(a.id)}", "${esc(a.username)}")'>Hapus</button>` : ''}
+            <button class="btn btn-ghost btn-sm" onclick="AdminApp.openEditModal('akun', '${esc(a.id)}')">Edit</button>
+            ${a.id !== 'ADM-001' ? `<button class="btn btn-danger btn-sm" onclick="AdminApp.deleteOne('akun', '${esc(a.id)}', '${esc(a.username)}')">Hapus</button>` : ''}
           </td>
         </tr>`).join('')}
       </tbody>`;
@@ -276,7 +325,7 @@ const AdminApp = (() => {
             <td><strong>${esc(sr.status)}</strong></td>
             <td>
               ${sr.status !== 'SELESAI'
-                ? `<button class="btn btn-primary btn-sm" onclick='AdminApp.markLetterDone("${esc(sr.id_surat)}")'>Tandai Selesai</button>`
+                ? `<button class="btn btn-primary btn-sm" onclick="AdminApp.markLetterDone('${esc(sr.id_surat)}')">Tandai Selesai</button>`
                 : '✅ Selesai'}
             </td>
           </tr>`;
@@ -296,6 +345,82 @@ const AdminApp = (() => {
       </tbody>`;
   }
 
+  function openEditModal(entity, id) {
+    const idStr = String(id).trim();
+    let found = null;
+    if (entity === 'nilai') found = state.nilai.find(x => String(x.id_nilai).trim() === idStr);
+    else if (entity === 'guru') found = state.guru.find(x => String(x.id).trim() === idStr);
+    else if (entity === 'mapel') found = state.mapel.find(x => String(x.id).trim() === idStr);
+    else if (entity === 'kelas') found = state.kelas.find(x => String(x.id).trim() === idStr);
+    else if (entity === 'siswa') found = state.siswa.find(x => String(x.nis).trim() === idStr);
+    else if (entity === 'akun') found = state.akun.find(x => String(x.id).trim() === idStr);
+
+    if (!found) {
+      SecurityManager.showToast('Data tidak ditemukan untuk diedit.');
+      return;
+    }
+    openFormModal(entity, found);
+  }
+
+  function attachGradeLivePreview() {
+    const form = document.getElementById('crudForm');
+    const box = document.getElementById('gradeLivePreview');
+    if (!form || !box) return;
+
+    const recalc = () => {
+      const getVal = name => {
+        const raw = form.querySelector(`[name="${name}"]`)?.value ?? '';
+        if (raw === '') return null;
+        const n = Number(String(raw).replace(',', '.'));
+        return isNaN(n) ? null : Math.min(100, Math.max(0, n));
+      };
+
+      const mapelName = form.querySelector('[name="mata_pelajaran"]')?.value || '';
+      const foundMapel = state.mapel.find(m => String(m.nama_mapel).trim() === mapelName);
+      const kkm = foundMapel ? Number(foundMapel.kkm) : APP_CONFIG.KKM;
+
+      const n1 = getVal('nilai_1');
+      const n2 = getVal('nilai_2');
+      const n3 = getVal('nilai_3');
+      const tambah = getVal('nilai_tambah') || 0;
+      const manualFinal = getVal('nilai_akhir');
+
+      const comps = [n1, n2, n3].filter(v => v !== null);
+      if (manualFinal === null && comps.length === 0) {
+        box.innerHTML = `<span class="muted">Pratinjau Nilai Akhir akan muncul saat Anda mengisi komponen nilai.</span>`;
+        return;
+      }
+
+      let finalScore = 0;
+      let modeLabel = '';
+      if (manualFinal !== null) {
+        finalScore = Math.round(manualFinal * 100) / 100;
+        modeLabel = 'Nilai Akhir Tetap';
+      } else {
+        const avg = comps.reduce((a, b) => a + b, 0) / comps.length;
+        finalScore = Math.round(Math.min(100, avg + tambah) * 100) / 100;
+        modeLabel = 'Hitung Otomatis';
+      }
+
+      const isAman = finalScore >= kkm;
+      box.innerHTML = `
+        <div>
+          <small class="muted" style="display:block;">Pratinjau (${modeLabel} • KKM ${kkm})</small>
+          <strong style="color:${isAman ? 'var(--success)' : 'var(--danger)'};">
+            ${isAman ? '🎉 AMAN (TUNTAS)' : '⚠️ REMEDIAL'}
+          </strong>
+        </div>
+        <div style="font-size:1.35rem; font-weight:800; color:var(--primary);">${finalScore}</div>
+      `;
+    };
+
+    form.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', recalc);
+      el.addEventListener('change', recalc);
+    });
+    recalc();
+  }
+
   function openFormModal(entity, existing = null) {
     activeModalEntity = entity;
     isEditing = Boolean(existing);
@@ -303,6 +428,7 @@ const AdminApp = (() => {
     const title = document.getElementById('crudModalTitle');
     const esc = GuestApp.escapeHtml;
     const admin = JSON.parse(sessionStorage.getItem('PHP_ADMIN_USER') || '{}');
+
     const guruItems = (state.guru || []).map(g => ({
       value: g.nama_guru,
       label: `${g.nama_guru}${g.bidang_studi ? ` (${g.bidang_studi})` : ''}`
@@ -325,7 +451,7 @@ const AdminApp = (() => {
           <input type="text" name="bidang_studi" placeholder="Contoh: Informatika / Bahasa Indonesia" value="${esc(existing?.bidang_studi || '')}" />
         </div>
         <div class="form-group">
-          <label>No. WhatsApp / Kontak (Opsional)</label>
+          <label>No. WhatsApp / Kontak (Opsional — untuk tautan WA remedial)</label>
           <input type="text" name="no_hp" placeholder="Contoh: 08123456789" value="${esc(existing?.no_hp || '')}" />
         </div>
         <button type="submit" class="btn btn-primary w-full">Simpan Guru Mapel</button>`;
@@ -367,17 +493,19 @@ const AdminApp = (() => {
             <option value="custom" ${existing?.tipe_card === 'custom' ? 'selected' : ''}>Input Sendiri / Label Komponen Kustom</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Label Komponen 1 (Opsional — misal: TKA Bahasa Indonesia / Tes Tulis)</label>
-          <input type="text" name="label_n1" value="${esc(existing?.label_n1 || '')}" />
-        </div>
-        <div class="form-group">
-          <label>Label Komponen 2 (Opsional — misal: TKA Matematika / Praktik)</label>
-          <input type="text" name="label_n2" value="${esc(existing?.label_n2 || '')}" />
-        </div>
-        <div class="form-group">
-          <label>Label Komponen 3 (Opsional — misal: TKA Bahasa Inggris / Portofolio)</label>
-          <input type="text" name="label_n3" value="${esc(existing?.label_n3 || '')}" />
+        <div id="customLabelsGroup">
+          <div class="form-group">
+            <label>Label Komponen 1 (Opsional — misal: TKA Bahasa Indonesia / Tes Tulis)</label>
+            <input type="text" name="label_n1" value="${esc(existing?.label_n1 || '')}" />
+          </div>
+          <div class="form-group">
+            <label>Label Komponen 2 (Opsional — misal: TKA Matematika / Praktik)</label>
+            <input type="text" name="label_n2" value="${esc(existing?.label_n2 || '')}" />
+          </div>
+          <div class="form-group">
+            <label>Label Komponen 3 (Opsional — misal: TKA Bahasa Inggris / Portofolio)</label>
+            <input type="text" name="label_n3" value="${esc(existing?.label_n3 || '')}" />
+          </div>
         </div>
         <div class="form-group">
           <label>KKM</label>
@@ -403,6 +531,14 @@ const AdminApp = (() => {
         allowEmpty: true,
         emptyText: 'Belum ada data di Master Guru Mapel (boleh dikosongkan)'
       });
+
+      const cardSel = document.getElementById('selectTipeCard');
+      const labelsGrp = document.getElementById('customLabelsGroup');
+      const toggleLabels = () => {
+        labelsGrp.classList.toggle('hidden', cardSel.value === 'nilai_akhir');
+      };
+      cardSel.addEventListener('change', toggleLabels);
+      toggleLabels();
     }
 
     if (entity === 'kelas') {
@@ -460,7 +596,7 @@ const AdminApp = (() => {
       form.innerHTML = `
         <div class="form-group">
           <label>NIS</label>
-          <input type="text" name="nis" required ${isEditing ? 'readonly' : ''} value="${esc(existing?.nis || '')}" />
+          <input type="text" name="nis" required ${isEditing ? 'readonly class="input-locked"' : ''} value="${esc(existing?.nis || '')}" />
         </div>
         <div class="form-group">
           <label>Nama Lengkap Siswa</label>
@@ -511,6 +647,12 @@ const AdminApp = (() => {
             <option value="Super Admin" ${existing?.role === 'Super Admin' ? 'selected' : ''}>Super Admin (Admin Pertama)</option>
           </select>
         </div>
+        ${isEditing ? `
+          <div class="form-group">
+            <label>Kelas Diampu (Pisahkan koma, contoh: VII-A,VII-B — kosongkan agar guru memilih ulang saat login)</label>
+            <input type="text" name="kelas_diampu" value="${esc(existing?.kelas_diampu || '')}" />
+          </div>
+        ` : ''}
         <button type="submit" class="btn btn-primary w-full">Simpan Akun</button>`;
     }
 
@@ -559,14 +701,15 @@ const AdminApp = (() => {
           <input type="number" step="0.01" min="0" max="100" name="nilai_3" value="${esc(existing?.nilai_3 ?? '')}" />
         </div>
         <div class="form-group">
-          <label>Nilai Tambah (Otomatis ke Nilai Akhir maks 100, sisa dilempar ke N1/N2/N3)</label>
+          <label>Nilai Tambah (Otomatis dipakai jika Nilai Akhir dikosongkan)</label>
           <input type="number" step="1" min="0" max="100" name="nilai_tambah" value="${esc(existing?.nilai_tambah ?? 0)}" />
         </div>
         <div class="form-group">
-          <label>Nilai Akhir Manual (Isi hanya jika Komponen 1, 2, 3 dikosongkan)</label>
+          <label>Nilai Akhir (Kosongkan untuk hitung otomatis; jika diisi maka nilainya tetap)</label>
           <input type="number" step="0.01" min="0" max="100" name="nilai_akhir" value="${esc(existing?.nilai_akhir ?? '')}" />
         </div>
-        <button type="submit" class="btn btn-primary w-full">Proses & Simpan Nilai</button>`;
+        <div id="gradeLivePreview" class="grade-live-preview"></div>
+        <button type="submit" class="btn btn-primary w-full">Proses &amp; Simpan Nilai</button>`;
 
       if (!isEditing) {
         UIComponents.attachSearchCombo({
@@ -578,6 +721,7 @@ const AdminApp = (() => {
           emptyText: 'Siswa tidak ditemukan pada kelas yang Anda ampu'
         });
       }
+      attachGradeLivePreview();
     }
 
     document.getElementById('crudModal').classList.remove('hidden');
@@ -591,6 +735,10 @@ const AdminApp = (() => {
     e.preventDefault();
     const fd = new FormData(e.target);
     const data = Object.fromEntries(fd.entries());
+
+    if (activeModalEntity === 'mapel' && !data.nama_mapel) {
+      data.nama_mapel = (document.getElementById('mapelComboSearch')?.value || '').trim();
+    }
 
     if (activeModalEntity === 'nilai' && !data.nis) {
       SecurityManager.showToast('Pilih siswa yang valid dari daftar pencarian terlebih dahulu.');
@@ -687,6 +835,8 @@ const AdminApp = (() => {
   return {
     init,
     loadDashboard,
+    renderTables,
+    openEditModal,
     openFormModal,
     closeCrudModal,
     deleteOne,

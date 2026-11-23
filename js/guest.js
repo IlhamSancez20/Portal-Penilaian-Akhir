@@ -1,11 +1,41 @@
 const GuestApp = (() => {
   const CATEGORIES = [
-    { key: 'slide_group', title: 'Nilai Terbaik Pembuatan Slide Kelompok', desc: 'Rata-rata Nilai 1 & Nilai 2 tertinggi per kelompok' },
-    { key: 'pres_group', title: 'Nilai Terbaik Presentasi Kelompok', desc: 'Skor Nilai 3 (Presentasi) tertinggi per kelompok' },
-    { key: 'total_group', title: 'Nilai Terbaik Total Kelompok', desc: 'Nilai Akhir tertinggi per kelompok' },
-    { key: 'slide_indiv', title: 'Nilai Terbaik Pembuatan Slide Individu', desc: 'Rata-rata Nilai 1 & Nilai 2 tertinggi individu' },
-    { key: 'pres_indiv', title: 'Nilai Terbaik Presentasi Individu', desc: 'Skor Nilai 3 (Presentasi) tertinggi individu' },
-    { key: 'total_indiv', title: 'Nilai Terbaik Total Individu', desc: 'Nilai Akhir tertinggi individu' }
+    {
+      key: 'slide_group',
+      tabLabel: '1. Pembuatan Slide (Kelompok)',
+      title: 'Nilai Terbaik Pembuatan Slide — Kelompok',
+      desc: 'Top 10 rata-rata Nilai 1 (Pembuatan) & Nilai 2 (Slide) tertinggi — Kelompok'
+    },
+    {
+      key: 'pres_group',
+      tabLabel: '2. Presentasi (Kelompok)',
+      title: 'Nilai Terbaik Presentasi — Kelompok',
+      desc: 'Top 10 skor Nilai 3 (Presentasi) tertinggi — Kelompok'
+    },
+    {
+      key: 'total_group',
+      tabLabel: '3. Total Akhir (Kelompok)',
+      title: 'Nilai Terbaik Total Akhir — Kelompok',
+      desc: 'Top 10 Nilai Akhir tertinggi — Kelompok'
+    },
+    {
+      key: 'slide_indiv',
+      tabLabel: '4. Pembuatan Slide (Individual)',
+      title: 'Nilai Terbaik Pembuatan Slide — Individual',
+      desc: 'Top 10 rata-rata Nilai 1 (Pembuatan) & Nilai 2 (Slide) tertinggi — Individual'
+    },
+    {
+      key: 'pres_indiv',
+      tabLabel: '5. Presentasi (Individual)',
+      title: 'Nilai Terbaik Presentasi — Individual',
+      desc: 'Top 10 skor Nilai 3 (Presentasi) tertinggi — Individual'
+    },
+    {
+      key: 'total_indiv',
+      tabLabel: '6. Total Akhir (Individual)',
+      title: 'Nilai Terbaik Total Akhir — Individual',
+      desc: 'Top 10 Nilai Akhir tertinggi — Individual'
+    }
   ];
 
   let publicData = null;
@@ -22,23 +52,40 @@ const GuestApp = (() => {
     });
 
     document.getElementById('lbClassFilter').addEventListener('change', () => renderLeaderboard());
-    document.getElementById('lbSubjectFilter').addEventListener('change', () => renderLeaderboard());
+    document.getElementById('lbSubjectFilter').addEventListener('change', () => {
+      slideElapsed = 0;
+      renderLeaderboard();
+    });
 
     document.getElementById('btnToggleAutoSlide').addEventListener('click', e => {
       autoSlideEnabled = !autoSlideEnabled;
       e.target.textContent = autoSlideEnabled ? '⏸️ 30s Auto' : '▶️ Jeda';
     });
 
-    document.querySelectorAll('#lbCategoryTabs .tab-chip').forEach((btn, idx) => {
-      btn.addEventListener('click', () => {
-        currentCatIndex = idx;
-        slideElapsed = 0;
-        renderLeaderboard();
-      });
-    });
-
     await loadLeaderboardData();
     startAutoRotation();
+  }
+
+  function getActiveCategoriesForSelection() {
+    if (!publicData || !publicData.subjects) return CATEGORIES;
+    const selectedCombo = String(document.getElementById('lbSubjectFilter')?.value || 'ALL');
+
+    if (selectedCombo === 'ALL') {
+      const unionSet = new Set();
+      publicData.subjects.forEach(s => {
+        (s.lb_modes || []).forEach(m => unionSet.add(m));
+      });
+      if (unionSet.size === 0) return CATEGORIES;
+      const filtered = CATEGORIES.filter(c => unionSet.has(c.key));
+      return filtered.length > 0 ? filtered : CATEGORIES;
+    }
+
+    const subjObj = publicData.subjects.find(s => String(s.key) === selectedCombo);
+    if (!subjObj || !Array.isArray(subjObj.lb_modes) || subjObj.lb_modes.length === 0) {
+      return CATEGORIES;
+    }
+    const filtered = CATEGORIES.filter(c => subjObj.lb_modes.includes(c.key));
+    return filtered.length > 0 ? filtered : CATEGORIES;
   }
 
   async function loadLeaderboardData() {
@@ -49,11 +96,15 @@ const GuestApp = (() => {
 
       const classSel = document.getElementById('lbClassFilter');
       classSel.innerHTML = `<option value="ALL">Semua Kelas (VII, VIII, XI)</option>` +
-        (res.classes || []).map(c => `<option value="${escapeHtml(c.nama_kelas)}">Kelas ${escapeHtml(c.nama_kelas)} (${escapeHtml(c.tingkat)})</option>`).join('');
+        (res.classes || []).map(c => `<option value="${escapeHtml(String(c.nama_kelas))}">Kelas ${escapeHtml(String(c.nama_kelas))} (${escapeHtml(String(c.tingkat))})</option>`).join('');
 
       const subjSel = document.getElementById('lbSubjectFilter');
-      subjSel.innerHTML = `<option value="ALL">Semua Mata Pelajaran</option>` +
-        (res.subjects || []).map(m => `<option value="${escapeHtml(m.nama_mapel)}">${escapeHtml(m.nama_mapel)} (${escapeHtml(m.jenis_ujian)})</option>`).join('');
+      subjSel.innerHTML = `<option value="ALL">Semua Mapel • Jenis Ujian • Guru Mapel</option>` +
+        (res.subjects || []).map(m => {
+          const guruPart = m.guru_mapel && m.guru_mapel !== '-' ? ` • ${m.guru_mapel}` : '';
+          const label = `${m.nama_mapel} • ${m.jenis_ujian}${guruPart}`;
+          return `<option value="${escapeHtml(String(m.key))}">${escapeHtml(label)}</option>`;
+        }).join('');
 
       renderLeaderboard();
     } catch (err) {
@@ -66,6 +117,13 @@ const GuestApp = (() => {
     const stepMs = 250;
     setInterval(() => {
       if (!autoSlideEnabled) return;
+      const activeCats = getActiveCategoriesForSelection();
+      if (activeCats.length <= 1) {
+        const bar = document.getElementById('lbProgressBar');
+        if (bar) bar.style.width = '100%';
+        return;
+      }
+
       slideElapsed += stepMs;
       const pct = Math.max(0, 100 - (slideElapsed / APP_CONFIG.LEADERBOARD_INTERVAL_MS) * 100);
       const bar = document.getElementById('lbProgressBar');
@@ -73,36 +131,62 @@ const GuestApp = (() => {
 
       if (slideElapsed >= APP_CONFIG.LEADERBOARD_INTERVAL_MS) {
         slideElapsed = 0;
-        currentCatIndex = (currentCatIndex + 1) % CATEGORIES.length;
+        currentCatIndex = (currentCatIndex + 1) % activeCats.length;
         renderLeaderboard();
       }
     }, stepMs);
   }
 
   function renderLeaderboard() {
-    const cat = CATEGORIES[currentCatIndex];
-    document.getElementById('lbCategoryTitle').textContent = cat.title;
+    const activeCats = getActiveCategoriesForSelection();
+    if (currentCatIndex >= activeCats.length) {
+      currentCatIndex = 0;
+    }
+
+    const cat = activeCats[currentCatIndex];
+    const selectedClass = String(document.getElementById('lbClassFilter').value);
+    const selectedCombo = String(document.getElementById('lbSubjectFilter').value);
+
+    const selectedSubjObj = (publicData?.subjects || []).find(s => String(s.key) === selectedCombo);
+    const headerContext = selectedSubjObj
+      ? ` (${selectedSubjObj.nama_mapel}${selectedSubjObj.guru_mapel && selectedSubjObj.guru_mapel !== '-' ? ` • ${selectedSubjObj.guru_mapel}` : ''})`
+      : '';
+
+    document.getElementById('lbCategoryTitle').textContent = cat.title + headerContext;
     document.getElementById('lbCategoryDesc').textContent = cat.desc;
 
-    document.querySelectorAll('#lbCategoryTabs .tab-chip').forEach((el, idx) => {
-      el.classList.toggle('active', idx === currentCatIndex);
+    const tabsEl = document.getElementById('lbCategoryTabs');
+    tabsEl.innerHTML = activeCats.map((c, idx) => `
+      <button type="button" class="tab-chip ${idx === currentCatIndex ? 'active' : ''}" data-idx="${idx}">
+        ${escapeHtml(c.tabLabel)}
+      </button>
+    `).join('');
+
+    tabsEl.querySelectorAll('.tab-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCatIndex = Number(btn.dataset.idx);
+        slideElapsed = 0;
+        renderLeaderboard();
+      });
     });
 
     const container = document.getElementById('lbListContainer');
     if (!publicData || !publicData.leaderboards) return;
 
-    const selectedClass = document.getElementById('lbClassFilter').value;
-    const selectedSubj = document.getElementById('lbSubjectFilter').value;
     let list = [...(publicData.leaderboards[cat.key] || [])];
 
-    if (selectedClass !== 'ALL') list = list.filter(item => item.kelas === selectedClass);
-    if (selectedSubj !== 'ALL') list = list.filter(item => item.mapel === selectedSubj);
+    if (selectedClass !== 'ALL') {
+      list = list.filter(item => String(item.kelas) === selectedClass);
+    }
+    if (selectedCombo !== 'ALL') {
+      list = list.filter(item => String(item.combo_key) === selectedCombo);
+    }
 
-    list.sort((a, b) => b.score - a.score);
-    const topList = list.slice(0, 6);
+    list.sort((a, b) => Number(b.score) - Number(a.score));
+    const topList = list.slice(0, 10);
 
     if (topList.length === 0) {
-      container.innerHTML = `<div class="muted">Belum ada data nilai pada kategori & filter ini.</div>`;
+      container.innerHTML = `<div class="muted">Belum ada data nilai pada kategori &amp; filter ini.</div>`;
       return;
     }
 
@@ -111,7 +195,9 @@ const GuestApp = (() => {
         <div class="rank-medal">#${i + 1}</div>
         <div class="rank-info">
           <h4 title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</h4>
-          <small class="muted">Kelas ${escapeHtml(item.kelas)} • ${escapeHtml(item.mapel)}</small>
+          <small class="muted">
+            Kelas ${escapeHtml(String(item.kelas))} • <strong>${escapeHtml(item.nama_mapel)}</strong>${item.guru_mapel && item.guru_mapel !== '-' ? ` • ${escapeHtml(item.guru_mapel)}` : ''}
+          </small>
         </div>
         <div class="rank-score">${item.score}</div>
       </div>
@@ -128,7 +214,7 @@ const GuestApp = (() => {
     btn.disabled = true;
     btn.textContent = 'Mencari...';
     section.classList.remove('hidden');
-    section.innerHTML = `<div class="card-glass">Memeriksa data siswa & daftar mata pelajaran...</div>`;
+    section.innerHTML = `<div class="card-glass">Memeriksa data siswa &amp; daftar mata pelajaran...</div>`;
 
     try {
       const res = await ApiClient.searchStudent(query);
@@ -168,6 +254,13 @@ const GuestApp = (() => {
       ta.remove();
       if (typeof SecurityManager !== 'undefined') SecurityManager.showToast('Template pesan WhatsApp berhasil disalin!');
     }
+  }
+
+  function formatWaPhone(rawPhone) {
+    const digits = String(rawPhone || '').replace(/\D/g, '');
+    if (!digits) return '';
+    if (digits.startsWith('0')) return '62' + digits.slice(1);
+    return digits;
   }
 
   function buildScoreBodyByCardType(sub) {
@@ -214,9 +307,9 @@ const GuestApp = (() => {
 
     if (type === 'custom') {
       const items = [];
-      if (sub.nilai_1 !== '' && sub.nilai_1 !== null) items.push({ label: sub.label_n1 || 'Komponen 1', val: sub.nilai_1 });
-      if (sub.nilai_2 !== '' && sub.nilai_2 !== null) items.push({ label: sub.label_n2 || 'Komponen 2', val: sub.nilai_2 });
-      if (sub.nilai_3 !== '' && sub.nilai_3 !== null) items.push({ label: sub.label_n3 || 'Komponen 3', val: sub.nilai_3 });
+      if (sub.nilai_1 !== '' && sub.nilai_1 !== null) items.push({ label: sub.label_n1 || 'Nilai 1 (Pembuatan)', val: sub.nilai_1 });
+      if (sub.nilai_2 !== '' && sub.nilai_2 !== null) items.push({ label: sub.label_n2 || 'Nilai 2 (Slide)', val: sub.nilai_2 });
+      if (sub.nilai_3 !== '' && sub.nilai_3 !== null) items.push({ label: sub.label_n3 || 'Nilai 3 (Presentasi)', val: sub.nilai_3 });
 
       return `
         <div class="grades-grid">
@@ -243,11 +336,11 @@ const GuestApp = (() => {
     return `
       <div class="grades-grid">
         <div class="grade-box">
-          <span>${escapeHtml(sub.label_n1 || 'Nilai 1 (Slide 1)')}</span>
+          <span>${escapeHtml(sub.label_n1 || 'Nilai 1 (Pembuatan)')}</span>
           <strong>${fmtVal(sub.nilai_1)}</strong>
         </div>
         <div class="grade-box">
-          <span>${escapeHtml(sub.label_n2 || 'Nilai 2 (Slide 2)')}</span>
+          <span>${escapeHtml(sub.label_n2 || 'Nilai 2 (Slide)')}</span>
           <strong>${fmtVal(sub.nilai_2)}</strong>
         </div>
         <div class="grade-box">
@@ -301,7 +394,7 @@ const GuestApp = (() => {
           <div class="student-meta">
             <div>
               <h3>${escapeHtml(student.nama)}</h3>
-              <p class="muted">NIS: <strong>${escapeHtml(String(student.nis))}</strong> • Kelas: <strong>${escapeHtml(student.kelas)}</strong> • Kelompok: ${escapeHtml(student.kelompok)}</p>
+              <p class="muted">NIS: <strong>${escapeHtml(String(student.nis))}</strong> • Kelas: <strong>${escapeHtml(String(student.kelas))}</strong> • Kelompok: ${escapeHtml(student.kelompok)}</p>
             </div>
             <span class="status-badge">PROSES PENILAIAN</span>
           </div>
@@ -333,6 +426,11 @@ Mata Pelajaran : ${sub.mata_pelajaran}
 Saya ingin memperbaiki nilai saya pada ${sub.mata_pelajaran}, jadi yang harus saya lakukan apa bu/pak untuk memperbaiki nilai saya ?.
 Terima kasih.`;
 
+    const waNumber = formatWaPhone(sub.guru_wa);
+    const waDirectLink = waNumber
+      ? `<a class="btn btn-primary btn-sm" href="https://wa.me/${waNumber}?text=${encodeURIComponent(filledTemplate)}" target="_blank" rel="noopener noreferrer">💬 Chat WhatsApp Guru</a>`
+      : '';
+
     section.innerHTML = `
       <div class="card-glass result-card ${variantClass} ${isAman ? 'aman' : 'remedial'}">
         <div class="student-meta">
@@ -340,7 +438,7 @@ Terima kasih.`;
             <h3>${escapeHtml(student.nama)}</h3>
             <p class="muted">
               NIS: <strong>${escapeHtml(String(student.nis))}</strong> •
-              Kelas: <strong>${escapeHtml(student.kelas)}</strong> •
+              Kelas: <strong>${escapeHtml(String(student.kelas))}</strong> •
               Kelompok: <strong>${escapeHtml(student.kelompok)}</strong> •
               Guru Mapel: <strong>${escapeHtml(sub.guru_mapel)}</strong>
             </p>
@@ -362,6 +460,7 @@ Terima kasih.`;
             Silakan kepada guru yang bersangkutan mau secara ketemu langsung atau chat whatsapp pribadi ke guru tersebut untuk memperbaiki nilai. Contoh pesan template yang benar untuk chat whatsapp pribadi ke guru adalah :
             <pre class="wa-template-box">${escapeHtml(rawTemplate)}</pre>
             <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;" class="no-print">
+              ${waDirectLink}
               <button type="button" class="btn btn-primary btn-sm" onclick="GuestApp.copyRemedialTemplate('${encodeURIComponent(filledTemplate)}')">
                 📋 Salin Pesan Siap Kirim (Terisi Otomatis)
               </button>

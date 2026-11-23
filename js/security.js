@@ -1,49 +1,46 @@
 const SecurityManager = (() => {
-  let idleStart = Date.now();
-  let currentStage = 0;
-  let idleChecker = null;
-  let logoutCountdownTimer = null;
+  let lastActivity = Date.now();
+  let warningStage = 0;
+  let idleTimerId = null;
 
   function init() {
+    const btnOpen = document.getElementById('btnOpenLogin');
+    const btnClose = document.getElementById('btnCloseLogin');
+    const btnLogout = document.getElementById('btnAdminLogout');
+    const brandHome = document.getElementById('brandHome');
+
+    if (btnOpen) btnOpen.addEventListener('click', () => document.getElementById('loginModal').classList.remove('hidden'));
+    if (btnClose) btnClose.addEventListener('click', () => document.getElementById('loginModal').classList.add('hidden'));
+    if (btnLogout) btnLogout.addEventListener('click', () => logoutUser(false));
+    if (brandHome) brandHome.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
     document.querySelectorAll('.toggle-pass-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const input = document.getElementById(btn.dataset.target);
-        if (!input) return;
-        const isPass = input.type === 'password';
-        input.type = isPass ? 'text' : 'password';
+        const target = document.getElementById(btn.dataset.target);
+        if (!target) return;
+        const isPass = target.type === 'password';
+        target.type = isPass ? 'text' : 'password';
         btn.textContent = isPass ? '🙈' : '👁️';
       });
     });
 
-    document.getElementById('btnOpenLogin').addEventListener('click', () => {
-      document.getElementById('loginModal').classList.remove('hidden');
-    });
-    document.getElementById('btnCloseLogin').addEventListener('click', () => {
-      document.getElementById('loginModal').classList.add('hidden');
-    });
-
     document.getElementById('adminLoginForm').addEventListener('submit', handleLoginSubmit);
-    document.getElementById('assignClassForm').addEventListener('submit', handleSaveAssignedClasses);
-    document.getElementById('btnAdminLogout').addEventListener('click', () => forceLogout('Anda telah logout.'));
-    document.getElementById('btnStayActive').addEventListener('click', resetIdleTimer);
+    document.getElementById('assignClassForm').addEventListener('submit', handleAssignClassSubmit);
+    document.getElementById('btnStayActive').addEventListener('click', resetIdleState);
 
     ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
-      document.addEventListener(evt, () => {
-        if (currentStage === 0) idleStart = Date.now();
+      window.addEventListener(evt, () => {
+        if (warningStage === 0) lastActivity = Date.now();
       }, { passive: true });
     });
 
-    if (sessionStorage.getItem('PHP_ADMIN_TOKEN')) {
-      const savedAdmin = JSON.parse(sessionStorage.getItem('PHP_ADMIN_USER') || '{}');
-      const savedClasses = JSON.parse(sessionStorage.getItem('PHP_AVAIL_CLASSES') || '[]');
-      activateAdminSession(savedAdmin, savedClasses);
-    }
+    restoreSessionIfAny();
   }
 
   async function handleLoginSubmit(e) {
     e.preventDefault();
-    const username = document.getElementById('loginUsername').value.trim();
-    const password = document.getElementById('loginPassword').value;
+    const u = document.getElementById('loginUsername').value.trim();
+    const p = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginErrorMsg');
     const btn = document.getElementById('btnSubmitLogin');
 
@@ -52,28 +49,26 @@ const SecurityManager = (() => {
     btn.textContent = 'Memverifikasi...';
 
     try {
-      const res = await fetch(APP_CONFIG.GAS_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'admin_login', username, password })
-      }).then(r => r.json());
-
-      if (!res.success) {
-        errEl.textContent = res.message;
+      const res = await ApiClient.adminRequest({ action: 'admin_login', username: u, password: p });
+      if (!res || !res.success) {
+        errEl.textContent = res?.message || 'Login gagal.';
         errEl.classList.remove('hidden');
         return;
       }
 
       sessionStorage.setItem('PHP_ADMIN_TOKEN', res.token);
       sessionStorage.setItem('PHP_ADMIN_USER', JSON.stringify(res.admin));
-      sessionStorage.setItem('PHP_AVAIL_CLASSES', JSON.stringify(res.availableClasses || []));
-
       document.getElementById('loginModal').classList.add('hidden');
       document.getElementById('adminLoginForm').reset();
 
-      activateAdminSession(res.admin, res.availableClasses || []);
+      const isSuper = res.admin.id === 'ADM-001' || res.admin.role === 'Super Admin';
+      if (!isSuper && !res.admin.kelas_diampu) {
+        openAssignClassModal(res.availableClasses || []);
+      } else {
+        enterAdminView(res.admin);
+      }
     } catch (err) {
-      errEl.textContent = 'Gagal terhubung ke server autentikasi.';
+      errEl.textContent = 'Gangguan jaringan saat login.';
       errEl.classList.remove('hidden');
     } finally {
       btn.disabled = false;
@@ -81,49 +76,23 @@ const SecurityManager = (() => {
     }
   }
 
-  function activateAdminSession(admin, availableClasses = []) {
-    document.getElementById('guestView').classList.add('hidden');
-    document.getElementById('adminView').classList.remove('hidden');
-    document.getElementById('btnOpenLogin').classList.add('hidden');
-    document.getElementById('btnAdminLogout').classList.remove('hidden');
-
-    const isSuper = admin.id === 'ADM-001' || admin.role === 'Super Admin';
-    document.getElementById('adminPanelHeading').textContent = isSuper
-      ? 'Dashboard Admin Pertama (Super Admin)'
-      : `Dashboard Guru Mapel — ${admin.mata_pelajaran || ''}`;
-
-    document.getElementById('adminWelcomeText').textContent = isSuper
-      ? `${admin.nama_admin} • Hak Akses Penuh`
-      : `${admin.nama_admin} • Mapel: ${admin.mata_pelajaran} • Kelas Ampuan: ${admin.kelas_diampu || 'Belum Dipilih'}`;
-
-    if (!isSuper && !admin.kelas_diampu) {
-      openAssignClassModal(availableClasses);
-    }
-
-    startIdleMonitor();
-    AdminApp.loadDashboard();
-  }
-
-  function openAssignClassModal(availableClasses) {
+  function openAssignClassModal(classesList) {
     const box = document.getElementById('assignClassCheckboxes');
-    const uniqueNames = [...new Set(availableClasses.map(c => c.nama_kelas))];
+    box.innerHTML = classesList.length > 0
+      ? classesList.map(c => `
+          <label class="checkbox-item">
+            <input type="checkbox" value="${GuestApp.escapeHtml(c.nama_kelas)}" />
+            <span>${GuestApp.escapeHtml(c.nama_kelas)} (${GuestApp.escapeHtml(c.tingkat)})</span>
+          </label>
+        `).join('')
+      : `<p class="muted">Belum ada data kelas di Master Kelas. Hubungi Admin Pertama.</p>`;
 
-    if (uniqueNames.length === 0) {
-      box.innerHTML = `<p class="error-text">Belum ada Master Kelas yang dibuat oleh Admin Pertama.</p>`;
-    } else {
-      box.innerHTML = uniqueNames.map(cls => `
-        <label class="checkbox-item">
-          <input type="checkbox" name="kelas_ampuan" value="${GuestApp.escapeHtml(cls)}" />
-          <span>${GuestApp.escapeHtml(cls)}</span>
-        </label>
-      `).join('');
-    }
     document.getElementById('assignClassModal').classList.remove('hidden');
   }
 
-  async function handleSaveAssignedClasses(e) {
+  async function handleAssignClassSubmit(e) {
     e.preventDefault();
-    const checked = Array.from(document.querySelectorAll('input[name="kelas_ampuan"]:checked')).map(el => el.value);
+    const checked = Array.from(document.querySelectorAll('#assignClassCheckboxes input:checked')).map(el => el.value);
     const errEl = document.getElementById('assignClassError');
 
     if (checked.length === 0) {
@@ -131,114 +100,106 @@ const SecurityManager = (() => {
       errEl.classList.remove('hidden');
       return;
     }
+
     errEl.classList.add('hidden');
-
-    const res = await ApiClient.adminRequest({
-      action: 'save_assigned_classes',
-      classes: checked
-    });
-
+    const res = await ApiClient.adminRequest({ action: 'save_assigned_classes', classes: checked });
     if (res && res.success) {
       const admin = JSON.parse(sessionStorage.getItem('PHP_ADMIN_USER') || '{}');
       admin.kelas_diampu = res.kelas_diampu;
       sessionStorage.setItem('PHP_ADMIN_USER', JSON.stringify(admin));
-
       document.getElementById('assignClassModal').classList.add('hidden');
-      document.getElementById('adminWelcomeText').textContent =
-        `${admin.nama_admin} • Mapel: ${admin.mata_pelajaran} • Kelas Ampuan: ${admin.kelas_diampu}`;
       showToast(res.message);
-      AdminApp.loadDashboard();
+      enterAdminView(admin);
     } else {
-      errEl.textContent = res?.message || 'Gagal menyimpan pilihan kelas.';
+      errEl.textContent = res?.message || 'Gagal menyimpan kelas ampuan.';
       errEl.classList.remove('hidden');
     }
   }
 
-  function startIdleMonitor() {
-    resetIdleTimer();
-    clearInterval(idleChecker);
-
-    idleChecker = setInterval(() => {
-      if (!sessionStorage.getItem('PHP_ADMIN_TOKEN')) return;
-      const idleDuration = Date.now() - idleStart;
-
-      if (idleDuration >= APP_CONFIG.IDLE_TIMERS.WARNING_3_MS && currentStage < 3) {
-        showWarningStage(3);
-      } else if (idleDuration >= APP_CONFIG.IDLE_TIMERS.WARNING_2_MS && currentStage < 2) {
-        showWarningStage(2);
-      } else if (idleDuration >= APP_CONFIG.IDLE_TIMERS.WARNING_1_MS && currentStage < 1) {
-        showWarningStage(1);
-      }
-    }, 1000);
-  }
-
-  function showWarningStage(stage) {
-    currentStage = stage;
-    ThemeAudio.playWarningBeep();
-
-    const modal = document.getElementById('idleWarningModal');
-    const badge = document.getElementById('idleWarningBadge');
-    const title = document.getElementById('idleWarningTitle');
-    const desc = document.getElementById('idleWarningDesc');
-
-    modal.classList.remove('hidden');
-    badge.textContent = `PERINGATAN ${stage} / 3`;
-
-    if (stage === 1) {
-      title.textContent = 'Peringatan 1: Tidak Ada Aktivitas';
-      desc.textContent = 'Tidak terdeteksi interaksi selama 2 menit. Klik tombol di bawah untuk melanjutkan.';
-    } else if (stage === 2) {
-      title.textContent = 'Peringatan 2: Sesi Segera Berakhir';
-      desc.textContent = 'Tidak ada interaksi selama 3 menit. Peringatan berikutnya akan mengeluarkan akun Anda.';
-    } else if (stage === 3) {
-      title.textContent = 'Peringatan 3 (Terakhir): Auto Logout!';
-      desc.textContent = 'Akun akan otomatis logout dalam 15 detik demi keamanan database.';
-      clearTimeout(logoutCountdownTimer);
-      logoutCountdownTimer = setTimeout(() => {
-        forceLogout('Logout otomatis karena tidak ada aktivitas hingga Peringatan 3.');
-      }, APP_CONFIG.IDLE_TIMERS.LOGOUT_GRACE_MS);
+  function restoreSessionIfAny() {
+    const token = sessionStorage.getItem('PHP_ADMIN_TOKEN');
+    const admin = JSON.parse(sessionStorage.getItem('PHP_ADMIN_USER') || 'null');
+    if (token && admin) {
+      enterAdminView(admin);
     }
   }
 
-  function resetIdleTimer() {
-    idleStart = Date.now();
-    currentStage = 0;
-    clearTimeout(logoutCountdownTimer);
+  function enterAdminView(admin) {
+    document.getElementById('guestView').classList.add('hidden');
+    document.getElementById('adminView').classList.remove('hidden');
+    document.getElementById('btnOpenLogin').classList.add('hidden');
+    document.getElementById('btnAdminLogout').classList.remove('hidden');
+
+    document.getElementById('adminWelcomeText').textContent =
+      `${admin.nama_admin} • Role: ${admin.role} • Mapel: ${admin.mata_pelajaran || '-'} • Kelas: ${admin.kelas_diampu || 'Semua'}`;
+
+    startIdleMonitor();
+    AdminApp.loadDashboard();
+  }
+
+  function startIdleMonitor() {
+    if (idleTimerId) clearInterval(idleTimerId);
+    lastActivity = Date.now();
+    warningStage = 0;
+
+    idleTimerId = setInterval(() => {
+      if (!sessionStorage.getItem('PHP_ADMIN_TOKEN')) return;
+      const idleMs = Date.now() - lastActivity;
+      const [t1, t2, t3] = APP_CONFIG.IDLE_THRESHOLDS_MS;
+
+      if (idleMs >= t3) {
+        forceLogout('Sesi otomatis keluar setelah 3 peringatan tidak ada aktivitas.');
+      } else if (idleMs >= t2 && warningStage < 2) {
+        warningStage = 2;
+        showIdleModal('PERINGATAN 2 / 3', 'Sesi Anda akan segera berakhir dalam 1 menit jika tetap tidak aktif.');
+      } else if (idleMs >= t1 && warningStage < 1) {
+        warningStage = 1;
+        showIdleModal('PERINGATAN 1 / 3', 'Tidak terdeteksi aktivitas selama 3 menit.');
+      }
+    }, 3000);
+  }
+
+  function showIdleModal(badgeText, descText) {
+    ThemeAudio.playWarning();
+    document.getElementById('idleWarningBadge').textContent = badgeText;
+    document.getElementById('idleWarningDesc').textContent = descText;
+    document.getElementById('idleWarningModal').classList.remove('hidden');
+  }
+
+  function resetIdleState() {
+    lastActivity = Date.now();
+    warningStage = 0;
     document.getElementById('idleWarningModal').classList.add('hidden');
   }
 
-  async function forceLogout(reason) {
-    if (sessionStorage.getItem('PHP_ADMIN_TOKEN')) {
-      ApiClient.adminRequest({ action: 'admin_logout' }).catch(() => {});
-    }
+  async function logoutUser(silent = false) {
+    try { await ApiClient.adminRequest({ action: 'admin_logout' }); } catch (e) {}
+    forceLogout(silent ? '' : 'Anda telah keluar dari portal admin.');
+  }
+
+  function forceLogout(msg) {
     sessionStorage.removeItem('PHP_ADMIN_TOKEN');
     sessionStorage.removeItem('PHP_ADMIN_USER');
-    sessionStorage.removeItem('PHP_AVAIL_CLASSES');
-    clearInterval(idleChecker);
-    clearTimeout(logoutCountdownTimer);
-
+    if (idleTimerId) clearInterval(idleTimerId);
     document.getElementById('idleWarningModal').classList.add('hidden');
-    document.getElementById('assignClassModal').classList.add('hidden');
     document.getElementById('adminView').classList.add('hidden');
     document.getElementById('guestView').classList.remove('hidden');
     document.getElementById('btnOpenLogin').classList.remove('hidden');
     document.getElementById('btnAdminLogout').classList.add('hidden');
-
-    if (reason) showToast(reason);
-    ApiClient.clearCache();
-    GuestApp.loadLeaderboardData();
+    if (msg) showToast(msg);
   }
 
   function showToast(msg) {
-    const box = document.getElementById('toastContainer');
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
     const el = document.createElement('div');
     el.className = 'toast animate-pop';
     el.textContent = msg;
-    box.appendChild(el);
+    container.appendChild(el);
     setTimeout(() => el.remove(), 4200);
   }
 
-  return { init, forceLogout, showToast };
+  return { init, showToast, forceLogout };
 })();
 
 document.addEventListener('DOMContentLoaded', () => SecurityManager.init());
